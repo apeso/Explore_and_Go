@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">projekt</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="not_registered">Not registered?</string>
+    <string name="register">Register</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="username1">Username</string>
+    <string name="email">Email</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="register1">Register</string>
+    <string name="already_registered">Already registered?</string>
+    <string name="login1">Login</string>
+    <string name="email1">Email</string>
+</resources>
