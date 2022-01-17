@@ -14,4 +14,5 @@
     <string name="already_registered">Already registered?</string>
     <string name="login1">Login</string>
     <string name="email1">Email</string>
+    <string name="explore_and_go"><![CDATA[Explore&Go]]></string>
 </resources>

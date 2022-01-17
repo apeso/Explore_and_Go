@@ -1,17 +1,16 @@
 package com.example.projekt;
 
 public class City {
-    public String name;
-    public String id_country;
+    public String name_of_City;
+    //public String id_country;
 
     public City()
     {
 
     }
 
-    public City(String name, String id)
+    public City(String name)
     {
-        this.name = name;
-        this.id_country = id;
+        this.name_of_City = name;
     }
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/uno"
+        android:enabled="true"
+        android:icon="@drawable/username"
+        android:title="Uno" />
+
+    <item
+        android:id="@+id/dos"
+        android:enabled="true"
+        android:icon="@drawable/username"
+        android:title="Dos" />
+
+    <item
+        android:id="@+id/tres"
+        android:enabled="true"
+        android:icon="@drawable/username"
+        android:title="Tres" />
+
+    <item
+        android:id="@+id/cuatro"
+        android:enabled="true"
+        android:icon="@drawable/username"
+        android:title="Cuatro" />
+
+</menu>

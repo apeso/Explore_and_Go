@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "632510788383",
+    "firebase_url": "https://exploreandgo-c6aa6-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "exploreandgo-c6aa6",
     "storage_bucket": "exploreandgo-c6aa6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:632510788383:android:df75527415b9119bcf762a",
+        "mobilesdk_app_id": "1:632510788383:android:a0d3376f65f1d6e8cf762a",
         "android_client_info": {
           "package_name": "com.example.projekt"
         }
