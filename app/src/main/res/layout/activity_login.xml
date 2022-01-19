@@ -8,29 +8,36 @@
     android:gravity="center_horizontal">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="127dp"
-        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="80dp"
         app:srcCompat="@drawable/logo"/>
 
-    <EditText
-        android:layout_width="190dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:drawableLeft="@drawable/username"
-        android:background="#ffffff"
-        android:paddingLeft="10dp"
-        android:id="@+id/emailEt"
-        android:hint="@string/email" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="#ffffff"
+            android:id="@+id/emailEt"
+            android:hint="@string/email" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:layout_width="190dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="#ffffff"
-        android:drawableLeft="@drawable/password"
-        android:id="@+id/passwordEt"
-        android:hint="@string/password" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        android:layout_marginTop="20dp">
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:background="#ffffff"
+            android:id="@+id/passwordEt"
+            android:hint="@string/password" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:layout_width="190dp"
@@ -39,6 +46,15 @@
         android:background="#04ea00"
         android:id="@+id/loginBtn"
         android:text="@string/login" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:text="@string/forgot_your_password"
+        android:id="@+id/passwordReset"/>
 
     <!--kad za nešto stavimo wrap content to znači da točno
     veličinom odgovara svom sadržaju-->

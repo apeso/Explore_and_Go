@@ -1,5 +1,6 @@
 package com.example.projekt;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,9 +13,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText etPassword;
     Button btnLogin;
     TextView tvRegister;
+    TextView tvPassReset;
 
     public FirebaseAuth mAuth;
 
@@ -40,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = (EditText) findViewById(R.id.passwordEt);
         btnLogin = (Button) findViewById(R.id.loginBtn);
         tvRegister = (TextView) findViewById(R.id.registerTv);
+        tvPassReset = (TextView) findViewById(R.id.passwordReset);
 
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +53,44 @@ public class LoginActivity extends AppCompatActivity {
                 //Intent je klasa-najčešće je koristimo za startActivity
                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(registerIntent);
+            }
+        });
+
+        tvPassReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText resetMail = new EditText(view.getContext());
+                AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(view.getContext());
+                passwordResetDialog.setTitle("Reset password?");
+                passwordResetDialog.setMessage("Enter your email to receive reset link:");
+                passwordResetDialog.setView(resetMail);
+
+                passwordResetDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //extract the email and send the reset link
+                        String mail = resetMail.getText().toString().trim();
+                        mAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(LoginActivity.this, "Reset link sent to your email!",Toast.LENGTH_LONG).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(LoginActivity.this, "Error! Reset link not sent! "+ e.getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                });
+
+                passwordResetDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //close the dialog
+                    }
+                });
+                passwordResetDialog.show();
             }
         });
 
@@ -100,7 +144,32 @@ public class LoginActivity extends AppCompatActivity {
                         else
                         {
                             Log.d("KATE", "login neuspjesan");
-                            Toast.makeText(LoginActivity.this, "Failed to login! Please check your credentials", Toast.LENGTH_LONG).show();
+                            //obavijesti korisnika da provjeri unesene podatke ili da se registrira
+                            //Toast.makeText(LoginActivity.this, "Failed to login! Please check your credentials", Toast.LENGTH_LONG).show();
+
+                            //radimo pop-up window
+                            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                            builder.setCancelable(true);
+
+                            builder.setTitle("Failed to login!");
+                            builder.setMessage("Please go back and check your credentials or proceed to registration.");
+
+                            //za cancel button na pop-upu
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            });
+                            //za proceed to registration button
+                            builder.setPositiveButton("Register", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                                    startActivity(registerIntent);
+                                }
+                            });
+                            builder.show();
                         }
                     }
                 });
