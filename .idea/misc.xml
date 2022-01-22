@@ -3,15 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/drawable/circle.xml" value="0.14351851851851852" />
+        <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/drawable/circle_border.xml" value="0.14351851851851852" />
+        <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/drawable/grad.xml" value="0.14351851851851852" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/drawable/ic_launcher_background.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_new_trip.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_profile.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_profile.xml" value="0.25" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_register.xml" value="0.2" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_travels.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/menu/bottom_nav.xml" value="0.1259259259259259" />
+        <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/menu/maps_menu.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>

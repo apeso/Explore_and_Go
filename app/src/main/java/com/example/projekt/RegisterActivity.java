@@ -57,11 +57,6 @@ public class RegisterActivity extends AppCompatActivity{
         //ovo je za bazu
         mAuth = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
-        /*if(mAuth.getCurrentUser() != null)
-        {
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-            finish();
-        }*/
 
         etName = (EditText) findViewById(R.id.nameEt);
         etSurname = (EditText) findViewById(R.id.surnameEt);

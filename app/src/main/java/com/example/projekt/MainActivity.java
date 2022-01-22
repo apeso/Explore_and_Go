@@ -47,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
                         return true;
                     case R.id.cuatro:
-                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                        Intent i=new Intent(getApplicationContext(), ProfileActivity.class);
+                        startActivity(i);
+
                         return true;
                 }
                 return true;

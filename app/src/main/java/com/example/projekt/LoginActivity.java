@@ -3,6 +3,7 @@ package com.example.projekt;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -43,6 +45,10 @@ public class LoginActivity extends AppCompatActivity {
 
         etEmail = (EditText) findViewById(R.id.emailEt);
         etPassword = (EditText) findViewById(R.id.passwordEt);
+        //samo da bude skrivena lozinka pri pojavljivanju
+        etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        etPassword.setSelection(etPassword.length());
+
         btnLogin = (Button) findViewById(R.id.loginBtn);
         tvRegister = (TextView) findViewById(R.id.registerTv);
         tvPassReset = (TextView) findViewById(R.id.passwordReset);
