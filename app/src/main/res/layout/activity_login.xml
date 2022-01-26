@@ -22,7 +22,9 @@
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:background="#ffffff"
+            android:nextFocusForward="@id/passwordEt"
             android:id="@+id/emailEt"
+            android:inputType="text"
             android:hint="@string/email" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -37,6 +39,7 @@
             android:layout_height="50dp"
             android:background="#ffffff"
             android:id="@+id/passwordEt"
+            android:inputType="text"
             android:hint="@string/password" />
     </com.google.android.material.textfield.TextInputLayout>
 

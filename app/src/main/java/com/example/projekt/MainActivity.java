@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
         bottomNavigationView.setBackground(null);
+        bottomNavigationView.setSelectedItemId(R.id.uno);
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
                         return true;
                 }
-                return true;
+                return false;
             }
         });
     }

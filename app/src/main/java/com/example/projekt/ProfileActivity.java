@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +28,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -55,6 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
     public String userId;
     //sluzi za update baze podataka
     public String password;
+    BottomNavigationView bottomNavigationView;
 
 
     @Override
@@ -68,6 +72,31 @@ public class ProfileActivity extends AppCompatActivity {
         userId=mAuth.getCurrentUser().getUid();
         user=mAuth.getCurrentUser();
 
+        /*bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        bottomNavigationView.setSelectedItemId(R.id.cuatro);
+
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.uno:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        return true;
+                    case R.id.dos:
+                        startActivity(new Intent(getApplicationContext(), NewTripActivity.class));
+                        return true;
+                    case R.id.tres:
+                        startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
+                        return true;
+                    case R.id.cuatro:
+                        *//*Intent i=new Intent(getApplicationContext(), ProfileActivity.class);
+                        startActivity(i);*//*
+
+                        return true;
+                }
+                return true;
+            }
+        });*/
 
         profileImage=(ImageView) findViewById(R.id.imgUserProfileImage);
         tvName = (TextView) findViewById(R.id.tv_name);
@@ -102,7 +131,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         //ovamo dohvaćamo profilnu sliku trenutno prijavljenog korisnika i tako pomocu picasso liba punimo imageview
         //ovamo mozda bude bacalo gresku jer mozda ce ucitavat slike s mobitela pod drugom ekstenzijom(npr .jpg)
-        StorageReference profileRef=fStorage.child("users/"+userId+"/profile.jpeg");
+        StorageReference profileRef=fStorage.child("users/"+userId+"/profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -185,9 +214,10 @@ public class ProfileActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private void changeProfileImage(){
+    public void changeProfileImage(){
         //otvara galeriju slika na uređaju
-        Intent openGalleryIntent=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent openGalleryIntent;
+        openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         activityResultLauncher(openGalleryIntent);
     }
     public void logoutClick(View view){
@@ -198,10 +228,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void uploadImageToFirebase(Uri imageUri){
         //upload image to firebase storage
-
         //dohvacamo referencu na zeljenu sliku
         //ovamo mozda bude bacalo gresku zbog ekstenzije slike(mozda triba .jpg)
-        StorageReference fillRef=fStorage.child("users/"+userId+"/profile.jpeg");
+        StorageReference fillRef=fStorage.child("users/"+userId+"/profile.jpg");
         fillRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -213,7 +242,7 @@ public class ProfileActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ProfileActivity.this,"Image not uploaded",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ProfileActivity.this,"Image not uploaded!",Toast.LENGTH_LONG).show();
 
                     }
                 });
@@ -221,7 +250,7 @@ public class ProfileActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(ProfileActivity.this,"Image not uploaded",Toast.LENGTH_LONG).show();
+                Toast.makeText(ProfileActivity.this,"Image not uploaded!",Toast.LENGTH_LONG).show();
 
             }
         });
@@ -231,7 +260,7 @@ public class ProfileActivity extends AppCompatActivity {
         AlertDialog.Builder passResetDialog=new AlertDialog.Builder(ProfileActivity.this);
         passResetDialog.setCancelable(true);
         passResetDialog.setTitle("Reset password?");
-        passResetDialog.setMessage("Enter new password (8 characters long).");
+        passResetDialog.setMessage("Enter new password (8 characters long):");
 
         final EditText resetPassword=new EditText(ProfileActivity.this);
         passResetDialog.setView(resetPassword);
@@ -246,20 +275,23 @@ public class ProfileActivity extends AppCompatActivity {
         passResetDialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String newPassword=resetPassword.getText().toString();
+
+                String newPassword = resetPassword.getText().toString();
+
                 if(newPassword.length()<8){
                     return;
                     //ovamo bi triba dio da se ponovno otvori dialog da se upise lozinka
                 }
+
                 user.updatePassword(newPassword).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(ProfileActivity.this,"Password reset successfully",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ProfileActivity.this,"Success!",Toast.LENGTH_LONG).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(ProfileActivity.this,"Not saved",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ProfileActivity.this,"Not saved!",Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -267,7 +299,7 @@ public class ProfileActivity extends AppCompatActivity {
         passResetDialog.show();
     }
     public void activityResultLauncher(Intent intent){
-        //ovo je launcher za otovrit galeriju slika
+        //ovo je launcher za otvorit galeriju slika
         //on odabranu sliku pretvara iz jpg u uri format te taj uri spremamo na firestore
         ActivityResultLauncher<Intent> activityResultLauncher=
                 registerForActivityResult(
@@ -283,7 +315,7 @@ public class ProfileActivity extends AppCompatActivity {
                                     uploadImageToFirebase(imageUri);
                                 }
                                 else{
-                                    Toast.makeText(ProfileActivity.this,"Image not uploaded",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(ProfileActivity.this,"Image not uploaded!",Toast.LENGTH_LONG).show();
                                 }
                             }
 
@@ -293,4 +325,5 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     }
+
 }

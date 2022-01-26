@@ -3,6 +3,7 @@ package com.example.projekt;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -68,6 +69,20 @@ public class RegisterActivity extends AppCompatActivity{
         tvLogin = (TextView) findViewById(R.id.loginTv);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        //samo da bude skrivena lozinka pri pojavljivanju
+        etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        etPassword.setSelection(etPassword.length());
+        etRepeatPasssword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        etRepeatPasssword.setSelection(etRepeatPasssword.length());
+
+        tvLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(loginIntent);
+            }
+        });
+
         btnRegister.setOnClickListener(view -> registerUser());
     }
 
@@ -110,8 +125,15 @@ public class RegisterActivity extends AppCompatActivity{
             return;
         }
 
+
         if (pass.isEmpty()) {
             etPassword.setError("Password is required!");
+            etPassword.requestFocus();
+            return;
+        }
+
+        if (pass.length() < 8) {
+            etPassword.setError("Password needs to be at least 8 characters!");
             etPassword.requestFocus();
             return;
         }
