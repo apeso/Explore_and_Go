@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -60,7 +62,7 @@ public class ProfileActivity extends AppCompatActivity {
     public String userId;
     //sluzi za update baze podataka
     public String password;
-    //BottomNavigationView bottomNavigationView;
+    BottomNavigationView bottomNavigationView;
     ActivityResultLauncher<String> activityResultLauncher;
 
 
@@ -75,7 +77,8 @@ public class ProfileActivity extends AppCompatActivity {
         userId=mAuth.getCurrentUser().getUid();
         user=mAuth.getCurrentUser();
 
-        /*bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        bottomNavigationView.setBackground(null);
         bottomNavigationView.setSelectedItemId(R.id.cuatro);
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -92,14 +95,12 @@ public class ProfileActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
                         return true;
                     case R.id.cuatro:
-                        *//*Intent i=new Intent(getApplicationContext(), ProfileActivity.class);
-                        startActivity(i);*//*
-
+                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                         return true;
                 }
                 return true;
             }
-        });*/
+        });
 
         profileImage=(ImageView) findViewById(R.id.imgUserProfileImage);
         tvName = (TextView) findViewById(R.id.tv_name);
@@ -110,11 +111,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         btnSaveChanges = (Button) findViewById(R.id.btnSaveChanges);
         btnResetPassword = (Button) findViewById(R.id.btnResetPassword);
-        btnChangeProfileImage=(ImageView) findViewById(R.id.btnchangeProfileImage);
 
         btnSaveChanges.setOnClickListener(view -> saveChanges());
         btnResetPassword.setOnClickListener(view -> resetPassword());
-        btnChangeProfileImage.setOnClickListener(view -> changeProfileImage());
+        //btnChangeProfileImage.setOnClickListener(view -> changeProfileImage());
 
         //ovo je launcher za otvorit galeriju slika
         activityResultLauncher= registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
@@ -129,6 +129,31 @@ public class ProfileActivity extends AppCompatActivity {
         fillForm();
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.exit_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.item1:
+                changeProfileImage();
+                return true;
+            case R.id.item2:
+                logoutClick();
+                return true;
+            default: return super.onOptionsItemSelected(item);
+        }
+
+    }
+
     private void fillForm(){
         //ovamo dohvacamo podatke za napunit editTextove o trenutno prijavljenom korisniku
         DocumentReference documentReference = fstore.collection("users").document(userId);
@@ -259,7 +284,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         }*/
     }
-    public void logoutClick(View view){
+    public void logoutClick(){
         //logout,klikom na ikonicu logout vraća nas kod na login stranicu
         Intent loginIntent = new Intent(ProfileActivity.this, LoginActivity.class);
         startActivity(loginIntent);

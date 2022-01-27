@@ -41,22 +41,10 @@
                         android:adjustViewBounds="true"
                         android:background="@drawable/grad"
                         android:padding="3dp"
-                        android:scaleType="centerInside"
+                        android:scaleType="fitXY"
                         android:src="@drawable/default_profile"
                         android:id="@+id/imgUserProfileImage" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_alignRight="@+id/imgUserProfileImage"
-                        android:layout_alignParentRight="false"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginRight="10dp"
-                        android:adjustViewBounds="true"
-                        android:id="@+id/btnchangeProfileImage"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/plus" />
-
+                    <!--ili centerInside za scaleType-->
 
                 </RelativeLayout>
 
@@ -73,17 +61,6 @@
                     android:textColor="@color/white"
                     android:textSize="25dp" />
 
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginRight="15dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/logout"
-                    android:onClick="logoutClick"/>
 
             </RelativeLayout>
 
@@ -362,31 +339,29 @@
                 </LinearLayout>
             </RelativeLayout>
             </ScrollView>
+
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/coordinator"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.google.android.material.bottomappbar.BottomAppBar
+                    android:id="@+id/bottomappbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom">
+                    <com.google.android.material.bottomnavigation.BottomNavigationView
+                        android:id="@+id/bottomnavigationbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="16dp"
+                        android:background="@android:color/transparent"
+                        app:menu="@menu/bottom_nav" />
+                </com.google.android.material.bottomappbar.BottomAppBar>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
         </RelativeLayout>
     </LinearLayout>
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/framecontainer" >
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/coordinator"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <com.google.android.material.bottomappbar.BottomAppBar
-                android:id="@+id/bottomappbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom">
-                <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/bottomnavigationbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="16dp"
-                    android:background="@android:color/transparent"
-                    app:menu="@menu/bottom_nav" />
-            </com.google.android.material.bottomappbar.BottomAppBar>
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    </FrameLayout>
+
 </androidx.appcompat.widget.LinearLayoutCompat>
 
 
