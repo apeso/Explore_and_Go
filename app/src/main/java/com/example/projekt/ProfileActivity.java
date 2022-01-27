@@ -3,6 +3,7 @@ package com.example.projekt;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,7 +52,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private Button btnSaveChanges,btnResetPassword;
     private TextView tvName;
-    private ImageView profileImage;
+    private ImageView profileImage,btnChangeProfileImage;
     public FirebaseAuth mAuth;
     public FirebaseFirestore fstore;
     public StorageReference fStorage;
@@ -58,7 +60,8 @@ public class ProfileActivity extends AppCompatActivity {
     public String userId;
     //sluzi za update baze podataka
     public String password;
-    BottomNavigationView bottomNavigationView;
+    //BottomNavigationView bottomNavigationView;
+    ActivityResultLauncher<String> activityResultLauncher;
 
 
     @Override
@@ -107,9 +110,21 @@ public class ProfileActivity extends AppCompatActivity {
 
         btnSaveChanges = (Button) findViewById(R.id.btnSaveChanges);
         btnResetPassword = (Button) findViewById(R.id.btnResetPassword);
+        btnChangeProfileImage=(ImageView) findViewById(R.id.btnchangeProfileImage);
 
         btnSaveChanges.setOnClickListener(view -> saveChanges());
         btnResetPassword.setOnClickListener(view -> resetPassword());
+        btnChangeProfileImage.setOnClickListener(view -> changeProfileImage());
+
+        //ovo je launcher za otvorit galeriju slika
+        activityResultLauncher= registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+        @Override
+        public void onActivityResult(Uri result) {
+            Toast.makeText(ProfileActivity.this,"Image trying!",Toast.LENGTH_LONG).show();
+            profileImage.setImageURI(result);
+            uploadImageToFirebase(result);
+        }
+        });
 
         fillForm();
 
@@ -131,13 +146,28 @@ public class ProfileActivity extends AppCompatActivity {
 
         //ovamo dohvaćamo profilnu sliku trenutno prijavljenog korisnika i tako pomocu picasso liba punimo imageview
         //ovamo mozda bude bacalo gresku jer mozda ce ucitavat slike s mobitela pod drugom ekstenzijom(npr .jpg)
-        StorageReference profileRef=fStorage.child("users/"+userId+"/profile.jpg");
+        try{
+        StorageReference profileRef=fStorage.child("users/"+userId+"/profile.jpeg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(profileImage);
             }
-        });
+        });}
+        catch (Exception e){
+            Toast.makeText(this,"Nije jpeg",Toast.LENGTH_LONG).show();
+        }
+        try{
+            StorageReference profileRef=fStorage.child("users/"+userId+"/profile.jpg");
+            profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri).into(profileImage);
+                }
+            });}
+        catch (Exception e){
+            Toast.makeText(this,"Nije jpg",Toast.LENGTH_LONG).show();
+        }
     }
     private void saveChanges(){
         String name = etName.getText().toString().trim();
@@ -216,9 +246,18 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void changeProfileImage(){
         //otvara galeriju slika na uređaju
-        Intent openGalleryIntent;
-        openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        activityResultLauncher(openGalleryIntent);
+        Toast.makeText(ProfileActivity.this,"pokusava otvorit galeriju!",Toast.LENGTH_LONG).show();
+        activityResultLauncher.launch("image/*");
+
+        /*Intent openGalleryIntent;
+        openGalleryIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(openGalleryIntent.resolveActivity(getPackageManager()) !=null){
+
+        }
+        else{
+            Toast.makeText(ProfileActivity.this,"nije uspio otvorit galeriju!",Toast.LENGTH_LONG).show();
+
+        }*/
     }
     public void logoutClick(View view){
         //logout,klikom na ikonicu logout vraća nas kod na login stranicu
@@ -298,32 +337,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
         passResetDialog.show();
     }
-    public void activityResultLauncher(Intent intent){
-        //ovo je launcher za otvorit galeriju slika
-        //on odabranu sliku pretvara iz jpg u uri format te taj uri spremamo na firestore
-        ActivityResultLauncher<Intent> activityResultLauncher=
-                registerForActivityResult(
-                        new ActivityResultContracts.StartActivityForResult(),
-                        new ActivityResultCallback<ActivityResult>() {
-                            @Override
-                            public void onActivityResult(ActivityResult activityResult) {
-                                int result=activityResult.getResultCode();
-                                Intent data=activityResult.getData();
-                                if(result== Activity.RESULT_OK){
-                                    Uri imageUri=data.getData();
-                                    profileImage.setImageURI(imageUri);
-                                    uploadImageToFirebase(imageUri);
-                                }
-                                else{
-                                    Toast.makeText(ProfileActivity.this,"Image not uploaded!",Toast.LENGTH_LONG).show();
-                                }
-                            }
 
-                        }
-                );
-        activityResultLauncher.launch(intent);
-
-
-    }
 
 }

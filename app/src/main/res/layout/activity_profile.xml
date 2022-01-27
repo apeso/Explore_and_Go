@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView android:layout_width="match_parent"
+<androidx.appcompat.widget.LinearLayoutCompat android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -48,14 +48,14 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
+                        android:layout_alignRight="@+id/imgUserProfileImage"
                         android:layout_alignParentRight="false"
                         android:layout_marginTop="20dp"
-                        android:layout_alignRight="@+id/imgUserProfileImage"
                         android:layout_marginRight="10dp"
                         android:adjustViewBounds="true"
+                        android:id="@+id/btnchangeProfileImage"
                         android:scaleType="centerInside"
-                        android:src="@drawable/plus"
-                        android:onClick="changeProfileImage"/>
+                        android:src="@drawable/plus" />
 
 
                 </RelativeLayout>
@@ -172,7 +172,10 @@
 
             </LinearLayout>
 
-
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linlay1">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -358,6 +361,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
+            </ScrollView>
         </RelativeLayout>
     </LinearLayout>
     <FrameLayout
@@ -383,6 +387,6 @@
             </com.google.android.material.bottomappbar.BottomAppBar>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </FrameLayout>
-</ScrollView>
+</androidx.appcompat.widget.LinearLayoutCompat>
 
 
