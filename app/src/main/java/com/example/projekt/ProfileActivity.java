@@ -274,15 +274,6 @@ public class ProfileActivity extends AppCompatActivity {
         Toast.makeText(ProfileActivity.this,"pokusava otvorit galeriju!",Toast.LENGTH_LONG).show();
         activityResultLauncher.launch("image/*");
 
-        /*Intent openGalleryIntent;
-        openGalleryIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(openGalleryIntent.resolveActivity(getPackageManager()) !=null){
-
-        }
-        else{
-            Toast.makeText(ProfileActivity.this,"nije uspio otvorit galeriju!",Toast.LENGTH_LONG).show();
-
-        }*/
     }
     public void logoutClick(){
         //logout,klikom na ikonicu logout vraća nas kod na login stranicu
