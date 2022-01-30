@@ -3,12 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Antonia/.android/ExploreandGO/Explore_and_Go/app/src/main/res/drawable/circle.xml" value="0.1325" />
-        <entry key="..\:/Users/Antonia/.android/ExploreandGO/Explore_and_Go/app/src/main/res/drawable/circle_border.xml" value="0.1325" />
-        <entry key="..\:/Users/Antonia/.android/ExploreandGO/Explore_and_Go/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.2595" />
-        <entry key="..\:/Users/Antonia/.android/ExploreandGO/Explore_and_Go/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Antonia/.android/ExploreandGO/Explore_and_Go/app/src/main/res/layout/activity_new_trip.xml" value="0.264" />
-        <entry key="..\:/Users/Antonia/.android/ExploreandGO/Explore_and_Go/app/src/main/res/layout/activity_profile.xml" value="0.2" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/drawable/circle.xml" value="0.14351851851851852" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/drawable/circle_border.xml" value="0.14351851851851852" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/drawable/grad.xml" value="0.14351851851851852" />
@@ -16,13 +10,14 @@
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/drawable/selector.xml" value="0.22685185185185186" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_main.xml" value="0.19649122807017544" />
-        <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_new_trip.xml" value="0.1" />
+        <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_new_trip.xml" value="0.264" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_profil.xml" value="0.1" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_profile.xml" value="0.264" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_register.xml" value="0.1" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_travels.xml" value="0.264" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/menu/bottom_nav.xml" value="0.1259259259259259" />
+        <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/menu/exit_menu.xml" value="0.1" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/menu/maps_menu.xml" value="0.25416666666666665" />
       </map>
     </option>
