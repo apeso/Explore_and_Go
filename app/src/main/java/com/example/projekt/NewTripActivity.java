@@ -67,10 +67,7 @@ public class NewTripActivity extends AppCompatActivity{
     public FirebaseFirestore fstore;
     public StorageReference fStorage;
 
-    //ZADACI::
-    //TODO urediti xml
-    //TODO dodati radio button za public or private post
-    //TODO ucitat sve postove
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +100,7 @@ public class NewTripActivity extends AppCompatActivity{
         et_description=(EditText) findViewById(R.id.description);
         datePicker=(DatePicker) findViewById(R.id.datePicker);
         btnSave=(Button) findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(view -> savePost());
+        btnSave.setOnClickListener(view -> saveTrip());
 
         selectImageFromGallery();
         activityResultLauncher= registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
@@ -114,7 +111,7 @@ public class NewTripActivity extends AppCompatActivity{
                 progressBar.setVisibility(View.INVISIBLE);
                 addNewImage.setVisibility(View.VISIBLE);
                 //trenutno necemo pozivati upload na bazu jer prvo cemo pricekati da korisnik klikne save button
-                //i onda cemo dohvatit id posta koji se spremio na fStore
+                //i onda cemo dohvatit id tripa koji se spremio na fStore
                 //uploadImageToFirebase(result);
             }
         });
@@ -202,7 +199,7 @@ public class NewTripActivity extends AppCompatActivity{
     public Uri uploadImageToFirebase(Uri imageUri,String key){
         //upload image to firebase storage
         final Uri[] link_to_firebase = new Uri[1];
-        StorageReference fillRef=fStorage.child("posts/"+"/"+key+"/post_profile.jpg");
+        StorageReference fillRef=fStorage.child("trips/"+"/"+key+"/trip_profile.jpg");
         fillRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -229,7 +226,7 @@ public class NewTripActivity extends AppCompatActivity{
         });
         return link_to_firebase[0];
     }
-    public void savePost() {
+    public void saveTrip() {
         String title=et_title.getText().toString().trim();
         String description=et_description.getText().toString().trim();
         String date=datePicker.getDayOfMonth()+"/"+(datePicker.getMonth()+1)+"/"+datePicker.getYear();
@@ -261,21 +258,21 @@ public class NewTripActivity extends AppCompatActivity{
             spinnerCities.requestFocus();
             return;
         }
-        DocumentReference myRef = fstore.collection("posts").document();
-        // get post unique ID and upadte post key
+        DocumentReference myRef = fstore.collection("trips").document();
+        // get trip unique ID and upadte trip key
         String key = myRef.getId();
         Uri imagePath=uploadImageToFirebase(selectedImage,key);
 
-        DocumentReference documentReference = fstore.collection("posts").document(key);
-        Map<String, Object> post = new HashMap<>();
-        post.put("title", title);
-        post.put("description", description);
-        post.put("date", date);
-        post.put("country", country);
-        post.put("city", city);
-        post.put("user_id",mAuth.getCurrentUser().getUid());
-        post.put("link_to_image",imagePath);
-        documentReference.set(post).addOnSuccessListener(new OnSuccessListener<Void>() {
+        DocumentReference documentReference = fstore.collection("trips").document(key);
+        Map<String, Object> trip = new HashMap<>();
+        trip.put("title", title);
+        trip.put("description", description);
+        trip.put("date", date);
+        trip.put("country", country);
+        trip.put("city", city);
+        trip.put("user_id",mAuth.getCurrentUser().getUid());
+        trip.put("link_to_image",imagePath);
+        documentReference.set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.d("KATE","success");
