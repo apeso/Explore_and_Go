@@ -17,15 +17,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class MyTravelsActivity extends AppCompatActivity {
@@ -33,14 +43,22 @@ public class MyTravelsActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     RecyclerView blog_list_view;
     List<Trip> trip_list;
-    FirebaseFirestore firebaseFirestore;
     private TripRecylerAdapter tripRecylerAdapter;
 
+    FirebaseFirestore fstore;
+    public FirebaseUser user;
+    public String userId;
+    public FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travels);
+
+        fstore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        userId=mAuth.getCurrentUser().getUid();
+        user=mAuth.getCurrentUser();
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
         bottomNavigationView.setBackground(null);
@@ -75,23 +93,24 @@ public class MyTravelsActivity extends AppCompatActivity {
         blog_list_view.setLayoutManager(new LinearLayoutManager(this));
         blog_list_view.setAdapter(tripRecylerAdapter);
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        firebaseFirestore.collection("trips").addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+        CollectionReference trips = fstore.collection("trips");
+        Query query = trips.whereEqualTo("user_id", userId);
+        //dobij rezultate querija
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot documentSnapshots, @Nullable FirebaseFirestoreException error) {
-                for(DocumentChange doc:documentSnapshots.getDocumentChanges())
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
                 {
-                    //provjeravamo je li sta dodano u kolekciju trips pa tek onda djelujemo
-                    if(doc.getType() == DocumentChange.Type.ADDED)
+                    for(QueryDocumentSnapshot document : task.getResult())
                     {
-                        Trip trip = doc.getDocument().toObject((Trip.class));
+                        Trip trip = document.toObject(Trip.class);
                         trip_list.add(trip);
                         tripRecylerAdapter.notifyDataSetChanged();
                     }
                 }
             }
         });
-
     }
 }
 

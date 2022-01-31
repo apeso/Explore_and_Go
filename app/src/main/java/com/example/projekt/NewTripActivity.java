@@ -276,20 +276,21 @@ public class NewTripActivity extends AppCompatActivity{
             @Override
             public void onSuccess(Void unused) {
                 Log.d("KATE","success");
+                Toast.makeText(NewTripActivity.this, "Trip successfully saved!", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d("KATE", "failure"+ e.toString());
+                Toast.makeText(NewTripActivity.this, "Failed!", Toast.LENGTH_LONG).show();
             }
         });
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
     }
 
     private void fillSpinnerWithCountries() {
         ArrayList<String> list=new ArrayList<>();
-        Toast.makeText(NewTripActivity.this,"Pokusava ucitat",Toast.LENGTH_LONG).show();
+        //Toast.makeText(NewTripActivity.this,"Pokusava ucitat",Toast.LENGTH_LONG).show();
         String json=loadJSONFromAsset();
 
         if(json!=null){
