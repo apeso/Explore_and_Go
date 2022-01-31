@@ -277,7 +277,7 @@ public class NewTripActivity extends AppCompatActivity{
             public void onSuccess(Void unused) {
                 Log.d("KATE","success");
                 Toast.makeText(NewTripActivity.this, "Trip successfully saved!", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
+                //startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
