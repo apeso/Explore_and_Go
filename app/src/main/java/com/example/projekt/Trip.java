@@ -5,8 +5,8 @@ public class Trip {
     private String name; //naziv izleta koji će se prikazivati na naslovnici
     private String date; //datum objave posta
     private String description; //kratki opis
-    //public String link_to_image; //putanja do slike
-    private String published; //je li objava javno dostupna (true ili false)
+    public String link_to_image; //putanja do slike
+    private Boolean published; //je li objava javno dostupna (true ili false)
     private String id_city; //id grada za koji vežemo ovo putovanje
 
     public Trip()
@@ -14,22 +14,22 @@ public class Trip {
 
     }
 
-    public Trip(String id_user, String name, String date, String description, String published, String id_city)
+    public Trip(String id_user, String name, String date, String description, String id_city,String link_to_image,Boolean published)
     {
         this.setId_user(id_user);
         this.name = name;
         this.setDate(date);
         this.description = description;
-        //this.link_to_image = link_to_image;
-        this.setPublished(published);
+        this.link_to_image = link_to_image;
+        this.published=published;
         this.id_city = id_city;
     }
 
-    public String getPublished() {
+    public Boolean getPublished() {
         return published;
     }
 
-    public void setPublished(String published) {
+    public void setPublished(Boolean published) {
         this.published = published;
     }
 

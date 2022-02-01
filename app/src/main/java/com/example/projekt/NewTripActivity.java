@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -58,6 +59,7 @@ public class NewTripActivity extends AppCompatActivity{
     ProgressBar progressBar;
     BottomNavigationView bottomNavigationView;
     Spinner spinnerCountry,spinnerCities;
+    CheckBox publicChb;
     Button btnSave;
     EditText et_title,et_description;
     DatePicker datePicker;
@@ -99,6 +101,7 @@ public class NewTripActivity extends AppCompatActivity{
         et_title=(EditText) findViewById(R.id.title);
         et_description=(EditText) findViewById(R.id.description);
         datePicker=(DatePicker) findViewById(R.id.datePicker);
+        publicChb=(CheckBox) findViewById(R.id.checkBox);
         btnSave=(Button) findViewById(R.id.btnSave);
         btnSave.setOnClickListener(view -> saveTrip());
 
@@ -196,9 +199,9 @@ public class NewTripActivity extends AppCompatActivity{
         activityResultLauncher.launch("image/*");
 
     }
-    public Uri uploadImageToFirebase(Uri imageUri,String key){
+    public String uploadImageToFirebase(Uri imageUri,String key){
         //upload image to firebase storage
-        final Uri[] link_to_firebase = new Uri[1];
+        final String[] link_to_firebase =new String[1];
         StorageReference fillRef=fStorage.child("trips/"+"/"+key+"/trip_profile.jpg");
         fillRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -206,7 +209,7 @@ public class NewTripActivity extends AppCompatActivity{
                 fillRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        link_to_firebase[0] =uri;
+                        link_to_firebase[0] =uri.toString();
                         Picasso.get().load(uri).into(img);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -232,6 +235,7 @@ public class NewTripActivity extends AppCompatActivity{
         String date=datePicker.getDayOfMonth()+"/"+(datePicker.getMonth()+1)+"/"+datePicker.getYear();
         String country=spinnerCountry.getSelectedItem().toString();
         String city=spinnerCities.getSelectedItem().toString();
+        Boolean publicCheckBoxState=publicChb.isChecked();
 
         if (title.isEmpty()) {
             et_title.setError("Title is required!");
@@ -258,26 +262,34 @@ public class NewTripActivity extends AppCompatActivity{
             spinnerCities.requestFocus();
             return;
         }
+        if(selectedImage==null){
+            img.requestFocus();
+            showMessage("Morate odabrati sliku!");
+            return;
+        }
+
+
         DocumentReference myRef = fstore.collection("trips").document();
         // get trip unique ID and upadte trip key
         String key = myRef.getId();
-        Uri imagePath=uploadImageToFirebase(selectedImage,key);
-
+        String image_Path = uploadImageToFirebase(selectedImage,key);
+        //funkcija koja ce rec ostatku koda da čeka dok se uploada slika na storage
         DocumentReference documentReference = fstore.collection("trips").document(key);
         Map<String, Object> trip = new HashMap<>();
         trip.put("title", title);
         trip.put("description", description);
         trip.put("date", date);
+        trip.put("published",publicCheckBoxState);
         trip.put("country", country);
         trip.put("city", city);
         trip.put("user_id",mAuth.getCurrentUser().getUid());
-        trip.put("link_to_image",imagePath);
+        trip.put("link_to_image",image_Path);
         documentReference.set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.d("KATE","success");
                 Toast.makeText(NewTripActivity.this, "Trip successfully saved!", Toast.LENGTH_LONG).show();
-                //startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
+                startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -286,11 +298,12 @@ public class NewTripActivity extends AppCompatActivity{
                 Toast.makeText(NewTripActivity.this, "Failed!", Toast.LENGTH_LONG).show();
             }
         });
+
+
     }
 
     private void fillSpinnerWithCountries() {
         ArrayList<String> list=new ArrayList<>();
-        //Toast.makeText(NewTripActivity.this,"Pokusava ucitat",Toast.LENGTH_LONG).show();
         String json=loadJSONFromAsset();
 
         if(json!=null){
