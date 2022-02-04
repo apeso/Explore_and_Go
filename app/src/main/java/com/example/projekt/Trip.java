@@ -7,14 +7,16 @@ public class Trip {
     private String description; //kratki opis
     public String link_to_image; //putanja do slike
     private Boolean published; //je li objava javno dostupna (true ili false)
-    private String id_city; //id grada za koji vežemo ovo putovanje
+    private String id_city;//id grada za koji vežemo ovo putovanje
+    private String id_country;
 
     public Trip()
     {
 
     }
 
-    public Trip(String id_user, String name, String date, String description, String id_city,String link_to_image,Boolean published)
+    public Trip(String id_user, String name, String date, String description, String id_city,
+                String id_country,String link_to_image,Boolean published)
     {
         this.setId_user(id_user);
         this.name = name;
@@ -23,6 +25,7 @@ public class Trip {
         this.link_to_image = link_to_image;
         this.published=published;
         this.id_city = id_city;
+        this.id_country=id_country;
     }
 
     public Boolean getPublished() {
@@ -71,5 +74,17 @@ public class Trip {
 
     public void setId_city(String id_city) {
         this.id_city = id_city;
+    }
+    public void setId_country(String id_country) {
+        this.id_country = id_country;
+    }
+    public String getId_country() {
+        return id_country;
+    }
+    public void setLink_to_image(String link) {
+        this.link_to_image = link;
+    }
+    public String getLink_to_image() {
+        return link_to_image;
     }
 }
