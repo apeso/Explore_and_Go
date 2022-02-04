@@ -30,30 +30,38 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
     private EditText etName, etSurname, etUsername, etEmail;
     private ProgressBar progressBar;
     private Button btnSaveChanges,btnResetPassword;
-    private TextView tvName;
+    private TextView tvName,txtPublishedPosts,txtPrivatePosts;
     private ImageView profileImage,btnChangeProfileImage;
     public FirebaseAuth mAuth;
     public FirebaseFirestore fstore;
@@ -108,6 +116,8 @@ public class ProfileActivity extends AppCompatActivity {
         etSurname = (EditText) findViewById(R.id.txtSurnameInput);
         etUsername = (EditText) findViewById(R.id.txtusernameInput);
         etEmail = (EditText) findViewById(R.id.txtemailInput);
+        txtPrivatePosts=(TextView) findViewById(R.id.txtPrivatePosts);
+        txtPublishedPosts=(TextView) findViewById(R.id.txtPublishedPosts);
 
         btnSaveChanges = (Button) findViewById(R.id.btnSaveChanges);
         btnResetPassword = (Button) findViewById(R.id.btnResetPassword);
@@ -166,6 +176,33 @@ public class ProfileActivity extends AppCompatActivity {
                 etUsername.setText(value.getString("username"));
                 etEmail.setText(value.getString("email"));
                 password=value.getString("password");
+            }
+        });
+        ArrayList<Trip> trip_list = new ArrayList<>();
+        CollectionReference trips = fstore.collection("trips");
+        Query query = trips.whereEqualTo("user_id", userId);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    for(QueryDocumentSnapshot document : task.getResult())
+                    {
+                        Trip trip = document.toObject(Trip.class);
+                        trip_list.add(trip);
+                    }
+                    Integer brojac_published=0;
+                    Integer brojac_private=0;
+
+                    for(Trip t:trip_list){
+                        if(t.getPublished()==true){
+                            brojac_published++;
+                        }
+                        else{brojac_private++;}
+                    }
+                    txtPublishedPosts.setText(brojac_published.toString());
+                    txtPrivatePosts.setText(brojac_private.toString());
+                }
             }
         });
 

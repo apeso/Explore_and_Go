@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -80,7 +81,6 @@ public class MyTravelsActivity extends AppCompatActivity {
                     case R.id.cuatro:
                         Intent i=new Intent(getApplicationContext(), ProfileActivity.class);
                         startActivity(i);
-                        return true;
                 }
                 return false;
             }

@@ -200,6 +200,16 @@ public class NewTripActivity extends AppCompatActivity{
 
     }
     public String uploadImageAndPostToFirebase(Uri imageUri,String key,Trip t){
+        et_title.setVisibility(View.INVISIBLE);
+        et_description.setVisibility(View.INVISIBLE);
+        datePicker.setVisibility(View.INVISIBLE);
+        publicChb.setVisibility(View.INVISIBLE);
+        btnSave.setVisibility(View.INVISIBLE);
+        spinnerCountry.setVisibility(View.INVISIBLE);
+        spinnerCities.setVisibility(View.INVISIBLE);
+
+        progressBar.setVisibility(View.VISIBLE);
+
         //upload image to firebase storage
         final String[] link_to_firebase =new String[1];
 
