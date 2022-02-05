@@ -219,9 +219,20 @@ public class NewTripActivity extends AppCompatActivity{
         activityResultLauncher.launch("image/*");
 
     }
-    public String uploadImageToFirebase(Uri imageUri,String key){
+    public String uploadImageAndPostToFirebase(Uri imageUri,String key,Trip t){
+        et_title.setVisibility(View.INVISIBLE);
+        et_description.setVisibility(View.INVISIBLE);
+        datePicker.setVisibility(View.INVISIBLE);
+        publicChb.setVisibility(View.INVISIBLE);
+        btnSave.setVisibility(View.INVISIBLE);
+        spinnerCountry.setVisibility(View.INVISIBLE);
+        spinnerCities.setVisibility(View.INVISIBLE);
+
+        progressBar.setVisibility(View.VISIBLE);
+
         //upload image to firebase storage
         final String[] link_to_firebase =new String[1];
+
         StorageReference fillRef=fStorage.child("trips/"+"/"+key+"/trip_profile.jpg");
         fillRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -229,8 +240,31 @@ public class NewTripActivity extends AppCompatActivity{
                 fillRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        link_to_firebase[0] =uri.toString();
                         Picasso.get().load(uri).into(img);
+                        DocumentReference documentReference = fstore.collection("trips").document(key);
+                        Map<String, Object> trip = new HashMap<>();
+                        trip.put("title", t.getName());
+                        trip.put("description", t.getdescription());
+                        trip.put("date", t.getDate());
+                        trip.put("published",t.getPublished());
+                        trip.put("country", t.getId_country());
+                        trip.put("city", t.getId_city());
+                        trip.put("user_id",mAuth.getCurrentUser().getUid());
+                        trip.put("link_to_image",uri.toString());
+                        documentReference.set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d("KATE","success");
+                                Toast.makeText(NewTripActivity.this, "Trip successfully saved!", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("KATE", "failure"+ e.toString());
+                                Toast.makeText(NewTripActivity.this, "Failed!", Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -292,33 +326,17 @@ public class NewTripActivity extends AppCompatActivity{
         DocumentReference myRef = fstore.collection("trips").document();
         // get trip unique ID and upadte trip key
         String key = myRef.getId();
-        String image_Path = uploadImageToFirebase(selectedImage,key);
-        //funkcija koja ce rec ostatku koda da čeka dok se uploada slika na storage
-        DocumentReference documentReference = fstore.collection("trips").document(key);
-        Map<String, Object> trip = new HashMap<>();
-        trip.put("title", title);
-        trip.put("description", description);
-        trip.put("date", date);
-        trip.put("published",publicCheckBoxState);
-        trip.put("country", country);
-        trip.put("city", city);
-        trip.put("user_id",mAuth.getCurrentUser().getUid());
-        trip.put("link_to_image",image_Path);
-        documentReference.set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Log.d("KATE","success");
-                Toast.makeText(NewTripActivity.this, "Trip successfully saved!", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("KATE", "failure"+ e.toString());
-                Toast.makeText(NewTripActivity.this, "Failed!", Toast.LENGTH_LONG).show();
-            }
-        });
 
+        Trip novi_trip=new Trip();
+        novi_trip.setName(title);
+        novi_trip.setdescription(description);
+        novi_trip.setDate(date);
+        novi_trip.setId_city(city);
+        novi_trip.setId_country(country);
+        novi_trip.setPublished(publicCheckBoxState);
+        novi_trip.setLink_to_image(selectedImage.toString());
+
+        uploadImageAndPostToFirebase(selectedImage,key,novi_trip);
 
     }
 

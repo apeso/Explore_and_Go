@@ -81,9 +81,13 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
 
         String dateData = trip_list.get(position).getDate();
         holder.setDateText(dateData);
+<<<<<<< HEAD
 
         StorageReference storageReference = fStorage.child("tbSgwaEhNRLZzdm5zNRu/profile.jpg");
         holder.setTripImage(storageReference.toString());
+=======
+        holder.setTripImage(trip_list.get(position).getLink_to_image());
+>>>>>>> bfdad5e64dc3e89caa4ca4b10634b3f2623a3806
     }
 
     @Override
@@ -124,10 +128,19 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
             dateView.setText(dateText);
         }
 
+<<<<<<< HEAD
         public void setTripImage(String downloadUri)
         {
             tripImageView = mView.findViewById(R.id.trip_image);
             Picasso.get().load(downloadUri).into(tripImageView);
+=======
+       public void setTripImage(String downloadUri)
+        {
+            tripImageView = mView.findViewById(R.id.trip_image);
+            //tripImageView.setImageURI(Uri.parse(downloadUri));
+            //Picasso.get().load(downloadUri).into(tripImageView);
+            Glide.with(context).load(downloadUri).into(tripImageView);
+>>>>>>> bfdad5e64dc3e89caa4ca4b10634b3f2623a3806
         }
     }
 }

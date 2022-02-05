@@ -38,7 +38,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+<<<<<<< HEAD
 import com.google.firebase.database.DataSnapshot;
+=======
+>>>>>>> bfdad5e64dc3e89caa4ca4b10634b3f2623a3806
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -62,7 +65,7 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText etName, etSurname, etUsername, etEmail;
     private ProgressBar progressBar;
     private Button btnSaveChanges,btnResetPassword;
-    private TextView tvName;
+    private TextView tvName,txtPublishedPosts,txtPrivatePosts;
     private ImageView profileImage,btnChangeProfileImage;
     private TextView txtPublished, txtPrivate;
     public FirebaseAuth mAuth;
@@ -141,8 +144,13 @@ public class ProfileActivity extends AppCompatActivity {
         etSurname = (EditText) findViewById(R.id.txtSurnameInput);
         etUsername = (EditText) findViewById(R.id.txtusernameInput);
         etEmail = (EditText) findViewById(R.id.txtemailInput);
+<<<<<<< HEAD
         txtPrivate = (TextView) findViewById(R.id.txtPrivatePosts);
         txtPublished = (TextView) findViewById(R.id.txtPublishedPosts);
+=======
+        txtPrivatePosts=(TextView) findViewById(R.id.txtPrivatePosts);
+        txtPublishedPosts=(TextView) findViewById(R.id.txtPublishedPosts);
+>>>>>>> bfdad5e64dc3e89caa4ca4b10634b3f2623a3806
 
         btnSaveChanges = (Button) findViewById(R.id.btnSaveChanges);
         btnResetPassword = (Button) findViewById(R.id.btnResetPassword);
@@ -202,6 +210,33 @@ public class ProfileActivity extends AppCompatActivity {
                 etUsername.setText(value.getString("username"));
                 etEmail.setText(value.getString("email"));
                 password=value.getString("password");
+            }
+        });
+        ArrayList<Trip> trip_list = new ArrayList<>();
+        CollectionReference trips = fstore.collection("trips");
+        Query query = trips.whereEqualTo("user_id", userId);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    for(QueryDocumentSnapshot document : task.getResult())
+                    {
+                        Trip trip = document.toObject(Trip.class);
+                        trip_list.add(trip);
+                    }
+                    Integer brojac_published=0;
+                    Integer brojac_private=0;
+
+                    for(Trip t:trip_list){
+                        if(t.getPublished()==true){
+                            brojac_published++;
+                        }
+                        else{brojac_private++;}
+                    }
+                    txtPublishedPosts.setText(brojac_published.toString());
+                    txtPrivatePosts.setText(brojac_private.toString());
+                }
             }
         });
 
