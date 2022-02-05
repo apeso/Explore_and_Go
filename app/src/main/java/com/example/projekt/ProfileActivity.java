@@ -38,10 +38,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-<<<<<<< HEAD
 import com.google.firebase.database.DataSnapshot;
-=======
->>>>>>> bfdad5e64dc3e89caa4ca4b10634b3f2623a3806
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -144,13 +141,13 @@ public class ProfileActivity extends AppCompatActivity {
         etSurname = (EditText) findViewById(R.id.txtSurnameInput);
         etUsername = (EditText) findViewById(R.id.txtusernameInput);
         etEmail = (EditText) findViewById(R.id.txtemailInput);
-<<<<<<< HEAD
+
         txtPrivate = (TextView) findViewById(R.id.txtPrivatePosts);
         txtPublished = (TextView) findViewById(R.id.txtPublishedPosts);
-=======
+
         txtPrivatePosts=(TextView) findViewById(R.id.txtPrivatePosts);
         txtPublishedPosts=(TextView) findViewById(R.id.txtPublishedPosts);
->>>>>>> bfdad5e64dc3e89caa4ca4b10634b3f2623a3806
+
 
         btnSaveChanges = (Button) findViewById(R.id.btnSaveChanges);
         btnResetPassword = (Button) findViewById(R.id.btnResetPassword);

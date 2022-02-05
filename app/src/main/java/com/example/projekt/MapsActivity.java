@@ -3,6 +3,8 @@ package com.example.projekt;
 import androidx.fragment.app.FragmentActivity;
 
 import android.app.Activity;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,11 +16,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.projekt.databinding.ActivityMapsBinding;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,9 +68,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         //String odb = spinnerAct.odabrano;
+        getLocationFromAddress("Split");
+    }
+
+    public void getLocationFromAddress(String strAddress)
+    {
+        //Create coder with Activity context - this
+        Geocoder coder = new Geocoder(this);
+        List<Address> address;
+
+        try {
+            //Get latLng from String
+            address = coder.getFromLocationName(strAddress,1);
+
+            //check for null
+            if (address == null) {
+                return;
+            }
+
+            //Lets take first possibility from the all possibilities.
+            Address location=address.get(0);
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+            //Put marker on map on that LatLng
+            Marker srchMarker = mMap.addMarker(new MarkerOptions().position(latLng).title("Destination"));
+
+            //Animate and Zoon on that map location
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
 

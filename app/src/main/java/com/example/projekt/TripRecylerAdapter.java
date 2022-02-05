@@ -2,6 +2,7 @@ package com.example.projekt;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -44,6 +46,7 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
     public StorageReference fStorage;
     public FirebaseUser user;
     public String userId;
+    public Uri userUri;
 
     @NonNull
     @Override
@@ -81,13 +84,21 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
 
         String dateData = trip_list.get(position).getDate();
         holder.setDateText(dateData);
-<<<<<<< HEAD
 
-        StorageReference storageReference = fStorage.child("tbSgwaEhNRLZzdm5zNRu/profile.jpg");
-        holder.setTripImage(storageReference.toString());
-=======
+
         holder.setTripImage(trip_list.get(position).getLink_to_image());
->>>>>>> bfdad5e64dc3e89caa4ca4b10634b3f2623a3806
+
+        fStorage.child("users/"+userId+"/profile.jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    userUri = task.getResult();
+                } else {
+                    Log.d("KATE", "neuspješno dohvaćanje user image!");
+                }
+            }
+        });
+        holder.setUserImage(userUri);
     }
 
     @Override
@@ -102,6 +113,7 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
         private TextView usernameView;
         private TextView dateView;
         private ImageView tripImageView;
+        private ImageView userImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -128,19 +140,17 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
             dateView.setText(dateText);
         }
 
-<<<<<<< HEAD
+
         public void setTripImage(String downloadUri)
         {
             tripImageView = mView.findViewById(R.id.trip_image);
             Picasso.get().load(downloadUri).into(tripImageView);
-=======
-       public void setTripImage(String downloadUri)
+        }
+
+        public void setUserImage(Uri downloadUri)
         {
-            tripImageView = mView.findViewById(R.id.trip_image);
-            //tripImageView.setImageURI(Uri.parse(downloadUri));
-            //Picasso.get().load(downloadUri).into(tripImageView);
-            Glide.with(context).load(downloadUri).into(tripImageView);
->>>>>>> bfdad5e64dc3e89caa4ca4b10634b3f2623a3806
+            userImageView = mView.findViewById(R.id.user_image);
+            Picasso.get().load(downloadUri).into(userImageView);
         }
     }
 }
