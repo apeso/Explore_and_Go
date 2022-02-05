@@ -40,6 +40,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MyTravelsActivity extends AppCompatActivity {
@@ -129,8 +131,12 @@ public class MyTravelsActivity extends AppCompatActivity {
                     {
                         Trip trip = document.toObject(Trip.class);
                         trip_list.add(trip);
+                        Comparator<Trip> dateSorter
+                                = (o1, o2) -> o2.getDate().compareTo(o1.getDate());
+                        Collections.sort(trip_list,dateSorter);
                         tripRecylerAdapter.notifyDataSetChanged();
                     }
+
                 }
             }
         });

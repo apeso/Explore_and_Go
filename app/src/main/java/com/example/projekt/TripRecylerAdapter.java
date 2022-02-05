@@ -13,7 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+//import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -93,12 +93,13 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
                     userUri = task.getResult();
+                    holder.setUserImage(userUri);
                 } else {
                     Log.d("KATE", "neuspješno dohvaćanje user image!");
                 }
             }
         });
-        holder.setUserImage(userUri);
+
     }
 
     @Override
