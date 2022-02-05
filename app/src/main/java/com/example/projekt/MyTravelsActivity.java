@@ -2,11 +2,13 @@ package com.example.projekt;
 
 import static android.app.PendingIntent.getActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +53,24 @@ public class MyTravelsActivity extends AppCompatActivity {
     public FirebaseAuth mAuth;
 
     @Override
+    public void onBackPressed()
+    {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        if(bottomNavigationView.getSelectedItemId() == R.id.tres)
+        {
+            super.onBackPressed();
+        }
+        else {
+            bottomNavigationView.setSelectedItemId(R.id.tres);
+        }
+    }
+
+    private void updateNavigationBarState(int actionId){
+        MenuItem item = bottomNavigationView.getMenu().findItem(actionId);
+        item.setChecked(true);
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travels);
@@ -82,7 +102,9 @@ public class MyTravelsActivity extends AppCompatActivity {
                         startActivity(i);
                         return true;
                 }
-                return false;
+                updateNavigationBarState(item.getItemId());
+
+                return true;
             }
         });
 

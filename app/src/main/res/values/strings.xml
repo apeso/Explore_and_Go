@@ -17,5 +17,11 @@
     <string name="explore_and_go"><![CDATA[Explore&Go]]></string>
     <string name="forgot_your_password">Forgot your password?</string>
     <string name="api_key">AIzaSyA4tJXtDhp1PGrRSc6oEIwrUHKiMioQNIE</string>
+    <string name="title_activity_maps">MapsActivity</string>
 
+    <string-array name="kategorije">
+        <item>museum</item>
+        <item>restaurant</item>
+        <item>cafe</item>
+    </string-array>
 </resources>

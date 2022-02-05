@@ -1,5 +1,6 @@
 package com.example.projekt;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
@@ -69,6 +70,23 @@ public class NewTripActivity extends AppCompatActivity{
     public FirebaseFirestore fstore;
     public StorageReference fStorage;
 
+    @Override
+    public void onBackPressed()
+    {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        if(bottomNavigationView.getSelectedItemId() == R.id.dos)
+        {
+            super.onBackPressed();
+        }
+        else {
+            bottomNavigationView.setSelectedItemId(R.id.dos);
+        }
+    }
+
+    private void updateNavigationBarState(int actionId){
+        MenuItem item = bottomNavigationView.getMenu().findItem(actionId);
+        item.setChecked(true);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,7 +159,9 @@ public class NewTripActivity extends AppCompatActivity{
                         startActivity(i);
                         return true;
                 }
-                return false;
+                updateNavigationBarState(item.getItemId());
+
+                return true;
             }
         });
 

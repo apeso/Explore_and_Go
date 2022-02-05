@@ -8,11 +8,14 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -24,6 +27,25 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
+    Button btn;
+
+    @Override
+    public void onBackPressed()
+    {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        if(bottomNavigationView.getSelectedItemId() == R.id.uno)
+        {
+            super.onBackPressed();
+        }
+        else {
+            bottomNavigationView.setSelectedItemId(R.id.uno);
+        }
+    }
+
+    private void updateNavigationBarState(int actionId){
+        MenuItem item = bottomNavigationView.getMenu().findItem(actionId);
+        item.setChecked(true);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
         bottomNavigationView.setBackground(null);
+        bottomNavigationView.getMenu().getItem(0).setChecked(false);
         bottomNavigationView.setSelectedItemId(R.id.uno);
-
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -53,7 +75,17 @@ public class MainActivity extends AppCompatActivity {
 
                         return true;
                 }
-                return false;
+                updateNavigationBarState(item.getItemId());
+
+                return true;
+            }
+        });
+
+        btn = (Button) findViewById(R.id.btn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), MapsActivity.class));
             }
         });
     }

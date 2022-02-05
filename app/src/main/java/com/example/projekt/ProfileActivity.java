@@ -30,23 +30,32 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -55,6 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Button btnSaveChanges,btnResetPassword;
     private TextView tvName;
     private ImageView profileImage,btnChangeProfileImage;
+    private TextView txtPublished, txtPrivate;
     public FirebaseAuth mAuth;
     public FirebaseFirestore fstore;
     public StorageReference fStorage;
@@ -65,6 +75,25 @@ public class ProfileActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     ActivityResultLauncher<String> activityResultLauncher;
 
+    Integer counter;
+
+    @Override
+    public void onBackPressed()
+    {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        if(bottomNavigationView.getSelectedItemId() == R.id.cuatro)
+        {
+            super.onBackPressed();
+        }
+        else {
+            bottomNavigationView.setSelectedItemId(R.id.cuatro);
+        }
+    }
+
+    private void updateNavigationBarState(int actionId){
+        MenuItem item = bottomNavigationView.getMenu().findItem(actionId);
+        item.setChecked(true);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +109,8 @@ public class ProfileActivity extends AppCompatActivity {
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
         bottomNavigationView.setBackground(null);
         bottomNavigationView.setSelectedItemId(R.id.cuatro);
+
+        counter = 0;
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -98,6 +129,8 @@ public class ProfileActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                         return true;
                 }
+                updateNavigationBarState(item.getItemId());
+
                 return true;
             }
         });
@@ -108,6 +141,8 @@ public class ProfileActivity extends AppCompatActivity {
         etSurname = (EditText) findViewById(R.id.txtSurnameInput);
         etUsername = (EditText) findViewById(R.id.txtusernameInput);
         etEmail = (EditText) findViewById(R.id.txtemailInput);
+        txtPrivate = (TextView) findViewById(R.id.txtPrivatePosts);
+        txtPublished = (TextView) findViewById(R.id.txtPublishedPosts);
 
         btnSaveChanges = (Button) findViewById(R.id.btnSaveChanges);
         btnResetPassword = (Button) findViewById(R.id.btnResetPassword);
@@ -115,6 +150,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnSaveChanges.setOnClickListener(view -> saveChanges());
         btnResetPassword.setOnClickListener(view -> resetPassword());
         //btnChangeProfileImage.setOnClickListener(view -> changeProfileImage());
+
 
         //ovo je launcher za otvorit galeriju slika
         activityResultLauncher= registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
@@ -193,6 +229,27 @@ public class ProfileActivity extends AppCompatActivity {
         catch (Exception e){
             Toast.makeText(this,"Nije jpg",Toast.LENGTH_LONG).show();
         }
+
+        //sad tribamo napravit query koji ce izbrojat koliko ima published a koliko private
+        CollectionReference tripsRef = fstore.collection("trips");
+        //Query queryPublished = tripsRef.whereEqualTo("published", true);
+
+        Query queryPrivate = tripsRef.whereEqualTo("published", false);
+
+        //dobij rezultate querija
+/*        queryPrivate.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    for(QueryDocumentSnapshot document : task.getResult())
+                    {
+                        counter++;
+                    }
+                    txtPrivate.setText(counter);
+                }
+            }
+        });*/
     }
     private void saveChanges(){
         String name = etName.getText().toString().trim();
