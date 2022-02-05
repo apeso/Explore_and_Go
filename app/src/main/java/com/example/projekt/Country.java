@@ -2,6 +2,7 @@ package com.example.projekt;
 
 import java.util.List;
 
+
 public class Country {
     public String name;
     public List<City> list_of_cities;

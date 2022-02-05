@@ -1,6 +1,7 @@
 package com.example.projekt;
 
 public class Trip {
+    private String id;
     private String id_user;
     private String name; //naziv izleta koji će se prikazivati na naslovnici
     private String date; //datum objave posta
@@ -15,9 +16,10 @@ public class Trip {
 
     }
 
-    public Trip(String id_user, String name, String date, String description, String id_city,
+    public Trip(String id,String id_user, String name, String date, String description, String id_city,
                 String id_country,String link_to_image,Boolean published)
     {
+        this.id=id;
         this.setId_user(id_user);
         this.name = name;
         this.setDate(date);
@@ -26,6 +28,14 @@ public class Trip {
         this.published=published;
         this.id_city = id_city;
         this.id_country=id_country;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Boolean getPublished() {

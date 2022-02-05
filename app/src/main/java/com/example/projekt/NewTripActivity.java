@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -47,8 +48,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -122,6 +125,9 @@ public class NewTripActivity extends AppCompatActivity{
         publicChb=(CheckBox) findViewById(R.id.checkBox);
         btnSave=(Button) findViewById(R.id.btnSave);
         btnSave.setOnClickListener(view -> saveTrip());
+
+        Calendar c = Calendar.getInstance();
+        datePicker.setMaxDate(c.getTimeInMillis());
 
         selectImageFromGallery();
         activityResultLauncher= registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
@@ -219,7 +225,7 @@ public class NewTripActivity extends AppCompatActivity{
         activityResultLauncher.launch("image/*");
 
     }
-    public String uploadImageAndPostToFirebase(Uri imageUri,String key,Trip t){
+    public void uploadImageAndPostToFirebase(Uri imageUri,String key,Trip t){
         et_title.setVisibility(View.INVISIBLE);
         et_description.setVisibility(View.INVISIBLE);
         datePicker.setVisibility(View.INVISIBLE);
@@ -230,8 +236,6 @@ public class NewTripActivity extends AppCompatActivity{
 
         progressBar.setVisibility(View.VISIBLE);
 
-        //upload image to firebase storage
-        final String[] link_to_firebase =new String[1];
 
         StorageReference fillRef=fStorage.child("trips/"+"/"+key+"/trip_profile.jpg");
         fillRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -243,6 +247,7 @@ public class NewTripActivity extends AppCompatActivity{
                         Picasso.get().load(uri).into(img);
                         DocumentReference documentReference = fstore.collection("trips").document(key);
                         Map<String, Object> trip = new HashMap<>();
+                        trip.put("id",key);
                         trip.put("title", t.getName());
                         trip.put("description", t.getdescription());
                         trip.put("date", t.getDate());
@@ -281,7 +286,6 @@ public class NewTripActivity extends AppCompatActivity{
 
             }
         });
-        return link_to_firebase[0];
     }
     public void saveTrip() {
         String title=et_title.getText().toString().trim();
@@ -328,6 +332,7 @@ public class NewTripActivity extends AppCompatActivity{
         String key = myRef.getId();
 
         Trip novi_trip=new Trip();
+        novi_trip.setId(key);
         novi_trip.setName(title);
         novi_trip.setdescription(description);
         novi_trip.setDate(date);

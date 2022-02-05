@@ -20,13 +20,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
+
                 <RelativeLayout
                     android:id="@+id/rellay1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="0dp">
                     <!--bilo je grad za background-->
+
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -44,9 +47,8 @@
 
                                 <ImageView
                                     android:id="@+id/img"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="180dp"
-                                    android:layout_marginTop="0dp"
+                                    android:layout_width="415dp"
+                                    android:layout_height="206dp"
                                     android:background="#2d2d2d"
                                     android:scaleType="centerCrop"
                                     app:layout_constraintBottom_toBottomOf="@id/img"
@@ -88,93 +90,51 @@
 
                         </RelativeLayout>
                     </LinearLayout>
+
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/rellay1">
+                    android:layout_below="@+id/rellay1"
+                    android:scrollbars="vertical">
 
-                    <LinearLayout
+                    <ScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="vertical">
-                        <!--Title -->
+                        android:layout_height="match_parent">
+
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="0dp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="25dp"
+                            android:layout_below="@id/framecontainer"
                             android:orientation="vertical">
-
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                >
-
-                                <EditText
-                                    android:id="@+id/title"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="50dp"
-                                    android:hint="Title"
-                                    android:inputType="text"
-                                    android:nextFocusForward="@id/description"
-                                    tools:ignore="SpeakableTextPresentCheck" />
-                            </com.google.android.material.textfield.TextInputLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="1dp"
-                                android:background="@color/grey" />
-
-                        </LinearLayout>
-                        <!--Description -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="1dp"
-                            android:orientation="vertical">
-
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                >
-
-                                <EditText
-                                    android:id="@+id/description"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="50dp"
-                                    android:hint="Description"
-                                    tools:ignore="SpeakableTextPresentCheck" />
-                            </com.google.android.material.textfield.TextInputLayout>
-
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="1dp"
-                                android:background="@color/grey" />
-
+                            <!--Title -->
                             <LinearLayout
-                                android:id="@+id/layoutPicker"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="0dp"
                                 android:orientation="vertical">
 
-                                <DatePicker
-                                    android:id="@+id/datePicker"
-                                    android:layout_width="220dp"
-                                    android:layout_height="100dp"
-                                    android:calendarViewShown="false"
-                                    android:datePickerMode="spinner"
-                                    android:layout_gravity="center"/>
 
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <EditText
+                                        android:id="@+id/title"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="50dp"
+                                        android:hint="Title"
+                                        android:inputType="text"
+                                        android:nextFocusForward="@id/description"
+                                        tools:ignore="SpeakableTextPresentCheck" />
+                                </com.google.android.material.textfield.TextInputLayout>
 
                                 <View
                                     android:layout_width="match_parent"
@@ -183,133 +143,186 @@
                                     android:background="@color/grey" />
 
                             </LinearLayout>
-
-                        </LinearLayout>
-                        <!-- Date Picker-->
-                        <!--Spinners-->
-                        <LinearLayout
-                            android:id="@+id/linlay1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/layoutPicker"
-                            android:orientation="horizontal">
-
-                            <RelativeLayout
+                            <!--Description -->
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="1"
-                                android:background="@color/followersBg"
-                                android:gravity="center"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp">
+                                android:layout_marginTop="1dp"
+                                android:orientation="vertical">
+
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <EditText
+                                        android:id="@+id/description"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="50dp"
+                                        android:hint="Description"
+                                        tools:ignore="SpeakableTextPresentCheck" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="1dp"
+                                    android:background="@color/grey" />
 
                                 <LinearLayout
-                                    android:layout_width="wrap_content"
+                                    android:id="@+id/layoutPicker"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
                                     android:orientation="vertical">
 
-                                    <TextView
-                                        android:id="@+id/txtPublishedPosts"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="sans-serif-light"
-                                        android:text="Select Country"
-                                        android:textColor="@color/white"
-                                        android:textSize="10sp" />
+                                    <DatePicker
+                                        android:id="@+id/datePicker"
+                                        android:layout_width="220dp"
+                                        android:layout_height="100dp"
+                                        android:layout_gravity="center"
+                                        android:calendarViewShown="false"
+                                        android:datePickerMode="spinner" />
 
-                                    <Spinner
-                                        android:id="@+id/spinnerCountry"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:spinnerMode="dropdown"
-                                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_marginTop="1dp"
+                                        android:background="@color/grey" />
 
                                 </LinearLayout>
 
-                            </RelativeLayout>
-
-                            <RelativeLayout
+                            </LinearLayout>
+                            <!-- Date Picker-->
+                            <!--Spinners-->
+                            <LinearLayout
+                                android:id="@+id/linlay1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_weight="1"
-                                android:background="@color/followingBg"
-                                android:gravity="center"
-                                android:paddingTop="5dp"
-                                android:paddingBottom="5dp">
+                                android:layout_below="@id/layoutPicker"
+                                android:orientation="horizontal">
 
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:gravity="center_horizontal"
-                                    android:orientation="vertical">
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:background="@color/followersBg"
+                                    android:gravity="center"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp">
 
-                                    <TextView
-                                        android:id="@+id/txtPrivatePosts"
+                                    <LinearLayout
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:fontFamily="sans-serif-light"
-                                        android:text="Select City"
-                                        android:textColor="@color/white"
-                                        android:textSize="10sp" />
+                                        android:gravity="center_horizontal"
+                                        android:orientation="vertical">
 
-                                    <Spinner
-                                        android:id="@+id/spinnerCities"
+                                        <TextView
+                                            android:id="@+id/txtPublishedPosts"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="sans-serif-light"
+                                            android:text="Select Country"
+                                            android:textColor="@color/white"
+                                            android:textSize="10sp" />
+
+                                        <Spinner
+                                            android:id="@+id/spinnerCountry"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:spinnerMode="dropdown"
+                                            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+                                    </LinearLayout>
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:background="@color/followingBg"
+                                    android:gravity="center"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp">
+
+                                    <LinearLayout
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:spinnerMode="dropdown"
-                                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                                        android:gravity="center_horizontal"
+                                        android:orientation="vertical">
 
-                                </LinearLayout>
+                                        <TextView
+                                            android:id="@+id/txtPrivatePosts"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="sans-serif-light"
+                                            android:text="Select City"
+                                            android:textColor="@color/white"
+                                            android:textSize="10sp" />
 
-                            </RelativeLayout>
+                                        <Spinner
+                                            android:id="@+id/spinnerCities"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:spinnerMode="dropdown"
+                                            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:orientation="vertical">
+                                    </LinearLayout>
 
-                            <CheckBox
-                                android:id="@+id/checkBox"
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:orientation="vertical">
+
+                                <CheckBox
+                                    android:id="@+id/checkBox"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:checked="false"
+
+                                    android:text="Public" />
+                            </LinearLayout>
+
+                            <!-- Save Button -->
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:checked="false"
+                                android:layout_marginTop="1dp"
+                                android:orientation="vertical">
 
-                                android:text="Public" />
+
+                                <Button
+                                    android:id="@+id/btnSave"
+                                    android:layout_width="198dp"
+                                    android:layout_height="54dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="100dp"
+                                    android:background="@color/browser_actions_bg_grey"
+                                    android:fontFamily="sans-serif-light"
+                                    android:text="Save"
+                                    android:textColor="@color/white"
+                                    android:textSize="15sp"
+                                    tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/grey" />
+
+                            </LinearLayout>
                         </LinearLayout>
-
-                        <!-- Save Button -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="1dp"
-                            android:orientation="vertical">
-
-
-                            <Button
-                                android:id="@+id/btnSave"
-                                android:layout_width="190dp"
-                                android:layout_height="40dp"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="5dp"
-                                android:background="@color/browser_actions_bg_grey"
-                                android:fontFamily="sans-serif-light"
-                                android:text="Save"
-                                android:textColor="@color/white"
-                                android:textSize="15sp"
-                                tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/grey" />
-
-                        </LinearLayout>
-                    </LinearLayout>
+                    </ScrollView>
                 </RelativeLayout>
+
             </LinearLayout>
 
             <FrameLayout
