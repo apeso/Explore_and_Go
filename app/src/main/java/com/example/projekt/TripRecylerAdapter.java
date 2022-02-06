@@ -1,6 +1,7 @@
 package com.example.projekt;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -85,8 +86,9 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
         String dateData = trip_list.get(position).getDate();
         holder.setDateText(dateData);
 
-
         holder.setTripImage(trip_list.get(position).getLink_to_image());
+        holder.tripImageView.setOnClickListener(view -> editTrip(trip_list.get(position).getId()));
+
 
         fStorage.child("users/"+userId+"/profile.jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
@@ -100,6 +102,13 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
             }
         });
 
+    }
+
+    private void editTrip(String id) {
+        //Intent je klasa-najčešće je koristimo za startActivity
+        Intent editingTripIntent = new Intent(context, EditingExitingTrip.class);
+        editingTripIntent.putExtra("key",id);
+        context.startActivity(editingTripIntent);
     }
 
     @Override

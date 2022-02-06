@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".EditingExitingTrip">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="com.example.projekt.EditingExitingTrip">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/rellay1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="0dp">
+                    <!--bilo je grad za background-->
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="0dp">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/img"
+                                    android:layout_width="415dp"
+                                    android:layout_height="206dp"
+                                    android:background="#2d2d2d"
+                                    android:scaleType="centerCrop"
+                                    app:layout_constraintBottom_toBottomOf="@id/img"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+                                <ImageView
+                                    android:id="@+id/add"
+                                    android:layout_width="56dp"
+                                    android:layout_height="56dp"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:layout_marginRight="8dp"
+                                    android:background="@drawable/circle"
+                                    android:padding="12dp"
+                                    app:layout_constraintBottom_toBottomOf="@id/img"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/img"
+                                    app:srcCompat="@drawable/ic_baseline_edit_24" />
+
+                                <ProgressBar
+                                    android:id="@+id/progressBar"
+                                    style="?android:attr/progressBarStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/circle"
+                                    android:padding="4dp"
+                                    android:visibility="invisible"
+                                    app:layout_constraintBottom_toBottomOf="@id/img"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/img" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                            <!--ili centerInside za scaleType-->
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/rellay1"
+                    android:scrollbars="vertical">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="25dp"
+                            android:layout_below="@id/framecontainer"
+                            android:orientation="vertical">
+                            <!--Title -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="0dp"
+                                android:orientation="vertical">
+
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <EditText
+                                        android:id="@+id/title"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="50dp"
+                                        android:hint="Title"
+                                        android:inputType="text"
+                                        android:nextFocusForward="@id/description"
+                                        tools:ignore="SpeakableTextPresentCheck" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="1dp"
+                                    android:background="@color/grey" />
+
+                            </LinearLayout>
+                            <!--Description -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp"
+                                android:orientation="vertical">
+
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <EditText
+                                        android:id="@+id/description"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="50dp"
+                                        android:hint="Description"
+                                        tools:ignore="SpeakableTextPresentCheck" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="1dp"
+                                    android:background="@color/grey" />
+
+                                <LinearLayout
+                                    android:id="@+id/layoutPicker"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <DatePicker
+                                        android:id="@+id/datePicker"
+                                        android:layout_width="220dp"
+                                        android:layout_height="100dp"
+                                        android:layout_gravity="center"
+                                        android:calendarViewShown="false"
+                                        android:datePickerMode="spinner" />
+
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_marginTop="1dp"
+                                        android:background="@color/grey" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <!-- Date Picker-->
+                            <!--Spinners-->
+                            <LinearLayout
+                                android:id="@+id/linlay1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/layoutPicker"
+                                android:orientation="horizontal">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:background="@color/followersBg"
+                                    android:gravity="center"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_horizontal"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/txtPublishedPosts"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="sans-serif-light"
+                                            android:text="Select Country"
+                                            android:textColor="@color/white"
+                                            android:textSize="10sp" />
+
+                                        <Spinner
+                                            android:id="@+id/spinnerCountry"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:spinnerMode="dropdown"
+                                            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+                                    </LinearLayout>
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:background="@color/followingBg"
+                                    android:gravity="center"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_horizontal"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/txtPrivatePosts"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="sans-serif-light"
+                                            android:text="Select City"
+                                            android:textColor="@color/white"
+                                            android:textSize="10sp" />
+
+                                        <Spinner
+                                            android:id="@+id/spinnerCities"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:spinnerMode="dropdown"
+                                            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                                    </LinearLayout>
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:orientation="vertical">
+
+                                <CheckBox
+                                    android:id="@+id/checkBox"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:checked="false"
+
+                                    android:text="Public" />
+                            </LinearLayout>
+
+                            <!-- Save Button -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="1dp"
+                                android:orientation="vertical">
+
+
+                                <Button
+                                    android:id="@+id/btnSave"
+                                    android:layout_width="198dp"
+                                    android:layout_height="54dp"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="100dp"
+                                    android:background="@color/browser_actions_bg_grey"
+                                    android:fontFamily="sans-serif-light"
+                                    android:text="Save"
+                                    android:textColor="@color/white"
+                                    android:textSize="15sp"
+                                    tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:background="@color/grey" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </ScrollView>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/framecontainer" >
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:id="@+id/coordinator"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <com.google.android.material.bottomappbar.BottomAppBar
+                        android:id="@+id/bottomappbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom">
+                        <com.google.android.material.bottomnavigation.BottomNavigationView
+                            android:id="@+id/bottomnavigationbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="16dp"
+                            android:background="@android:color/transparent"
+                            app:menu="@menu/bottom_nav" />
+                    </com.google.android.material.bottomappbar.BottomAppBar>
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            </FrameLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
