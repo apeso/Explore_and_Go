@@ -42,6 +42,7 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
     public FirebaseUser user;
     public String userId;
     public Uri userUri;
+    String locGradData;
 
     @NonNull
     @Override
@@ -67,8 +68,8 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
         String descData = all_trips_list.get(position).getdescription();
         holder.setDescText(descData);
 
-/*        String titleData = all_trips_list.get(position).getName();
-        holder.setTitleText(titleData);*/
+        String titleData = all_trips_list.get(position).getTitle();
+        holder.setTitleText(titleData);
 
         //s obzirom da username nije spremljen u trip, moramo prvo dohvatit
         fstore.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -82,7 +83,12 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
         String dateData = all_trips_list.get(position).getDate();
         holder.setDateText(dateData);
 
+        locGradData = all_trips_list.get(position).getCity();
+        String locDrzavaData = all_trips_list.get(position).getCountry();
+        holder.setLocText(locGradData+", "+locDrzavaData);
+
         holder.setTripImage(all_trips_list.get(position).getLink_to_image());
+
 
         fStorage.child("users/"+userId+"/profile.jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
@@ -113,6 +119,7 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
         private TextView titleView;
         private ImageView tripImageView;
         private ImageView userImageView;
+        private TextView locView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -121,8 +128,10 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
             mView.findViewById(R.id.btnKarta).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("KATE", "karta");
-                    context.startActivity(new Intent(context.getApplicationContext(), MapsActivity.class));
+                    Intent intent = new Intent(context.getApplicationContext(),MapsActivity.class);
+                    intent.putExtra("city", locGradData);
+                    Log.d("KATE", "karta: "+ locGradData);
+                    context.startActivity(intent);
                 }
             });
 
@@ -135,11 +144,11 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
             descView.setText(descText);
         }
 
-/*        public void setTitleText(String titleText)
+        public void setTitleText(String titleText)
         {
             titleView = mView.findViewById(R.id.title_trip);
             titleView.setText(titleText);
-        }*/
+        }
 
         //pa username
         public void setUsernameText(String usernameText)
@@ -155,6 +164,11 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
             dateView.setText(dateText);
         }
 
+        public void setLocText(String locText)
+        {
+            locView = mView.findViewById(R.id.trip_location);
+            locView.setText(locText);
+        }
 
         public void setTripImage(String downloadUri)
         {

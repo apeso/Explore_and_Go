@@ -199,12 +199,12 @@ public class NewTripActivity extends AppCompatActivity{
                         DocumentReference documentReference = fstore.collection("trips").document(key);
                         Map<String, Object> trip = new HashMap<>();
                         trip.put("id",key);
-                        trip.put("title", t.getName());
+                        trip.put("title", t.getTitle());
                         trip.put("description", t.getdescription());
                         trip.put("date", t.getDate());
                         trip.put("published",t.getPublished());
-                        trip.put("country", t.getId_country());
-                        trip.put("city", t.getId_city());
+                        trip.put("country", t.getCountry());
+                        trip.put("city", t.getCity());
                         trip.put("user_id",mAuth.getCurrentUser().getUid());
                         trip.put("link_to_image",uri.toString());
                         documentReference.set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -279,16 +279,16 @@ public class NewTripActivity extends AppCompatActivity{
 
 
         DocumentReference myRef = fstore.collection("trips").document();
-        // get trip unique ID and upadte trip key
+        // get trip unique ID and update trip key
         String key = myRef.getId();
 
         Trip novi_trip=new Trip();
         novi_trip.setId(key);
-        novi_trip.setName(title);
+        novi_trip.setTitle(title);
         novi_trip.setdescription(description);
         novi_trip.setDate(date);
-        novi_trip.setId_city(city);
-        novi_trip.setId_country(country);
+        novi_trip.setCity(city);
+        novi_trip.setCountry(country);
         novi_trip.setPublished(publicCheckBoxState);
         novi_trip.setLink_to_image(selectedImage.toString());
 

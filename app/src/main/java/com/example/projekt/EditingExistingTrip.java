@@ -241,11 +241,11 @@ public class EditingExistingTrip extends AppCompatActivity {
 
         Trip novi_trip=new Trip();
         novi_trip.setId(key);
-        novi_trip.setName(title);
+        novi_trip.setTitle(title);
         novi_trip.setdescription(description);
         novi_trip.setDate(date);
-        novi_trip.setId_city(city);
-        novi_trip.setId_country(country);
+        novi_trip.setCity(city);
+        novi_trip.setCountry(country);
         novi_trip.setPublished(publicCheckBoxState);
         novi_trip.setLink_to_image(selectedImage.toString());
 

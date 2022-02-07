@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     private SpinnerActivity spinnerAct;
+    private String strCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //apply the adapter to spinner
         spinner.setAdapter(adapter);
+
+        Intent intent = getIntent();
+        strCity = intent.getStringExtra("city");
     }
 
     /**
@@ -78,7 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         //String odb = spinnerAct.odabrano;
-        getLocationFromAddress("Split");
+        getLocationFromAddress(strCity);
     }
 
     public void getLocationFromAddress(String strAddress)

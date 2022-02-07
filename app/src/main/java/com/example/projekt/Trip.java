@@ -3,31 +3,31 @@ package com.example.projekt;
 public class Trip {
     private String id;
     private String id_user;
-    private String name; //naziv izleta koji će se prikazivati na naslovnici
+    private String title; //naziv izleta koji će se prikazivati na naslovnici
     private String date; //datum objave posta
     private String description; //kratki opis
     public String link_to_image; //putanja do slike
     private Boolean published; //je li objava javno dostupna (true ili false)
-    private String id_city;//id grada za koji vežemo ovo putovanje
-    private String id_country;
+    private String city;//id grada za koji vežemo ovo putovanje
+    private String country;
 
     public Trip()
     {
 
     }
 
-    public Trip(String id,String id_user, String name, String date, String description, String id_city,
-                String id_country,String link_to_image,Boolean published)
+    public Trip(String id,String id_user, String title, String date, String description, String city,
+                String country,String link_to_image,Boolean published)
     {
         this.id=id;
         this.id_user=id_user;
-        this.name = name;
+        this.setTitle(title);
         this.date=date;
         this.description = description;
         this.link_to_image = link_to_image;
         this.published=published;
-        this.id_city = id_city;
-        this.id_country=id_country;
+        this.setCity(city);
+        this.setCountry(country);
     }
 
     public String getId() {
@@ -62,13 +62,7 @@ public class Trip {
         this.date = date;
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getdescription() {
         return description;
@@ -78,23 +72,34 @@ public class Trip {
         this.description = description;
     }
 
-    public String getId_city() {
-        return id_city;
-    }
-
-    public void setId_city(String id_city) {
-        this.id_city = id_city;
-    }
-    public void setId_country(String id_country) {
-        this.id_country = id_country;
-    }
-    public String getId_country() {
-        return id_country;
-    }
     public void setLink_to_image(String link) {
         this.link_to_image = link;
     }
     public String getLink_to_image() {
         return link_to_image;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }
