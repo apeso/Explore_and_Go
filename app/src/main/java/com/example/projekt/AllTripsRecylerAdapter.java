@@ -25,6 +25,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecylerAdapter.ViewHolder> {
@@ -71,12 +72,18 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
         String titleData = all_trips_list.get(position).getTitle();
         holder.setTitleText(titleData);
 
-        //s obzirom da username nije spremljen u trip, moramo prvo dohvatit
-        fstore.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        //s obzirom da username nije spremljen u trip, moramo prvo dohvatit po user_idu koji je u tripu
+        fstore.collection("trips").document(all_trips_list.get(position).getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String user_name = documentSnapshot.getString("username");
-                holder.setUsernameText(user_name);
+                String user1 = documentSnapshot.getString("user_id");
+                fstore.collection("users").document(user1).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String user_name = documentSnapshot.getString("username");
+                        holder.setUsernameText(user_name);
+                    }
+                });
             }
         });
 
@@ -88,7 +95,6 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
         holder.setLocText(locGradData+", "+locDrzavaData);
 
         holder.setTripImage(all_trips_list.get(position).getLink_to_image());
-
 
         fStorage.child("users/"+userId+"/profile.jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override

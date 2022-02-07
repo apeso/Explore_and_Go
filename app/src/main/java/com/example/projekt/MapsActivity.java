@@ -96,6 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Get latLng from String
             address = coder.getFromLocationName(strAddress,1);
 
+
             //check for null
             if (address == null) {
                 return;
