@@ -79,24 +79,6 @@ public class ProfileActivity extends AppCompatActivity {
     Integer counter;
 
     @Override
-    public void onBackPressed()
-    {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
-        if(bottomNavigationView.getSelectedItemId() == R.id.cuatro)
-        {
-            super.onBackPressed();
-        }
-        else {
-            bottomNavigationView.setSelectedItemId(R.id.cuatro);
-        }
-    }
-
-    private void updateNavigationBarState(int actionId){
-        MenuItem item = bottomNavigationView.getMenu().findItem(actionId);
-        item.setChecked(true);
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
@@ -109,7 +91,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
         bottomNavigationView.setBackground(null);
-        bottomNavigationView.setSelectedItemId(R.id.cuatro);
+        //bottomNavigationView.setSelectedItemId(R.id.cuatro);
 
         counter = 0;
 
@@ -130,8 +112,6 @@ public class ProfileActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                         return true;
                 }
-                updateNavigationBarState(item.getItemId());
-
                 return true;
             }
         });
@@ -444,5 +424,22 @@ public class ProfileActivity extends AppCompatActivity {
         passResetDialog.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        int seletedItemId = bottomNavigationView.getSelectedItemId();
+        if (R.id.cuatro == seletedItemId) {
+            super.onBackPressed();
+        } else {
+            bottomNavigationView.setSelectedItemId(R.id.cuatro);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        bottomNavigationView.getMenu().getItem(3).setChecked(true);
+    }
 
 }

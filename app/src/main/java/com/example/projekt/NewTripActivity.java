@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -74,24 +75,6 @@ public class NewTripActivity extends AppCompatActivity{
     public StorageReference fStorage;
 
     @Override
-    public void onBackPressed()
-    {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
-        if(bottomNavigationView.getSelectedItemId() == R.id.dos)
-        {
-            super.onBackPressed();
-        }
-        else {
-            bottomNavigationView.setSelectedItemId(R.id.dos);
-        }
-    }
-
-    private void updateNavigationBarState(int actionId){
-        MenuItem item = bottomNavigationView.getMenu().findItem(actionId);
-        item.setChecked(true);
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_trip);
@@ -145,7 +128,7 @@ public class NewTripActivity extends AppCompatActivity{
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
         bottomNavigationView.setBackground(null);
-        bottomNavigationView.setSelectedItemId(R.id.dos);
+        //bottomNavigationView.setSelectedItemId(R.id.dos);
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -165,41 +148,9 @@ public class NewTripActivity extends AppCompatActivity{
                         startActivity(i);
                         return true;
                 }
-                updateNavigationBarState(item.getItemId());
-
                 return true;
             }
         });
-
-        /**
-         * Initialize Places. For simplicity, the API key is hard-coded. In a production
-         * environment we recommend using a secure mechanism to manage API keys.
-         */
-        /*if(!Places.isInitialized()){
-            Places.initialize(getApplicationContext(), apiKey);
-        }*/
-
-        // Create a new Places client instance.
-        //PlacesClient placesClient = Places.createClient(this);
-
-        // Initialize the AutocompleteSupportFragment.
-        //final AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-/*        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.LAT_LNG, Place.Field.NAME));
-
-        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                final LatLng latLng= place.getLatLng();
-
-                Log.i("KATE", "onPlaceSelected" + latLng.latitude + " " + latLng.longitude);
-            }
-
-            @Override
-            public void onError(@NonNull Status status) {
-
-            }
-        });*/
     }
 
     private void selectImageFromGallery() {
@@ -413,5 +364,23 @@ public class NewTripActivity extends AppCompatActivity{
     }
     public  void showMessage(String message){
         Toast.makeText(NewTripActivity.this,message,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        int seletedItemId = bottomNavigationView.getSelectedItemId();
+        if (R.id.dos == seletedItemId) {
+            super.onBackPressed();
+        } else {
+            bottomNavigationView.setSelectedItemId(R.id.dos);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        bottomNavigationView.getMenu().getItem(1).setChecked(true);
     }
 }

@@ -7,6 +7,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,45 +19,54 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
-    Button btn;
 
-    @Override
-    public void onBackPressed()
-    {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
-        if(bottomNavigationView.getSelectedItemId() == R.id.uno)
-        {
-            super.onBackPressed();
-        }
-        else {
-            bottomNavigationView.setSelectedItemId(R.id.uno);
-        }
-    }
+    RecyclerView all_trips_list_view;
+    List<Trip> all_trips_list;
+    private AllTripsRecylerAdapter allTripsRecylerAdapter;
 
-    private void updateNavigationBarState(int actionId){
-        MenuItem item = bottomNavigationView.getMenu().findItem(actionId);
-        item.setChecked(true);
-    }
+    FirebaseFirestore fstore;
+    public FirebaseUser user;
+    public String userId;
+    public FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        fstore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        userId=mAuth.getCurrentUser().getUid();
+        user=mAuth.getCurrentUser();
+
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
         bottomNavigationView.setBackground(null);
-        bottomNavigationView.getMenu().getItem(0).setChecked(false);
-        bottomNavigationView.setSelectedItemId(R.id.uno);
+        //bottomNavigationView.setSelectedItemId(R.id.uno);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -75,18 +86,53 @@ public class MainActivity extends AppCompatActivity {
 
                         return true;
                 }
-                updateNavigationBarState(item.getItemId());
-
                 return true;
             }
         });
+        all_trips_list_view = (RecyclerView) findViewById(R.id.all_trips_list_view);
+        all_trips_list = new ArrayList<>();
 
-        btn = (Button) findViewById(R.id.btn);
-        btn.setOnClickListener(new View.OnClickListener() {
+        allTripsRecylerAdapter = new AllTripsRecylerAdapter(all_trips_list);
+        all_trips_list_view.setLayoutManager(new LinearLayoutManager(this));
+        all_trips_list_view.setAdapter(allTripsRecylerAdapter);
+
+        CollectionReference trips = fstore.collection("trips");
+        //promijeni u ovo
+        //Query query = trips.whereEqualTo("published", true).whereNotEqualTo("user_id", userId);
+        Query query = trips.whereEqualTo("published", true);
+        //dobij rezultate querija
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), MapsActivity.class));
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    for(QueryDocumentSnapshot document : task.getResult())
+                    {
+                        Trip trip = document.toObject(Trip.class);
+                        all_trips_list.add(trip);
+                        allTripsRecylerAdapter.notifyDataSetChanged();
+                    }
+
+                }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        int seletedItemId = bottomNavigationView.getSelectedItemId();
+        if (R.id.uno == seletedItemId) {
+            super.onBackPressed();
+        } else {
+            bottomNavigationView.setSelectedItemId(R.id.uno);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        bottomNavigationView.getMenu().getItem(0).setChecked(true);
     }
 }

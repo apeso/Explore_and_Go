@@ -101,7 +101,7 @@
 
                     <ScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent" >
 
 
                         <LinearLayout
@@ -269,14 +269,14 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="30dp"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:layout_marginTop="10dp">
 
                                 <CheckBox
                                     android:id="@+id/checkBox"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:checked="false"
-
                                     android:text="Public" />
                             </LinearLayout>
 
@@ -284,7 +284,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="1dp"
+                                android:layout_marginTop="10dp"
                                 android:orientation="vertical">
 
 

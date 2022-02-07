@@ -45,7 +45,9 @@
             android:background="#ffffff"
             android:hint="@string/password"
             android:inputType="text"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck"
+            android:imeOptions="actionDone"
+            android:maxLines="1"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

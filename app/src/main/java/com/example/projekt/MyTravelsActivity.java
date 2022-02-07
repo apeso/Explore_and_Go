@@ -57,24 +57,6 @@ public class MyTravelsActivity extends AppCompatActivity {
     public FirebaseAuth mAuth;
 
     @Override
-    public void onBackPressed()
-    {
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
-        if(bottomNavigationView.getSelectedItemId() == R.id.tres)
-        {
-            super.onBackPressed();
-        }
-        else {
-            bottomNavigationView.setSelectedItemId(R.id.tres);
-        }
-    }
-
-    private void updateNavigationBarState(int actionId){
-        MenuItem item = bottomNavigationView.getMenu().findItem(actionId);
-        item.setChecked(true);
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travels);
@@ -86,7 +68,7 @@ public class MyTravelsActivity extends AppCompatActivity {
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
         bottomNavigationView.setBackground(null);
-        bottomNavigationView.setSelectedItemId(R.id.tres);
+        //bottomNavigationView.setSelectedItemId(R.id.tres);
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -105,8 +87,6 @@ public class MyTravelsActivity extends AppCompatActivity {
                         Intent i=new Intent(getApplicationContext(), ProfileActivity.class);
                         startActivity(i);
                 }
-                updateNavigationBarState(item.getItemId());
-
                 return true;
             }
         });
@@ -141,6 +121,22 @@ public class MyTravelsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        int seletedItemId = bottomNavigationView.getSelectedItemId();
+        if (R.id.tres == seletedItemId) {
+            super.onBackPressed();
+        } else {
+            bottomNavigationView.setSelectedItemId(R.id.tres);
+        }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
+        bottomNavigationView.getMenu().getItem(2).setChecked(true);
+    }
 }
 
