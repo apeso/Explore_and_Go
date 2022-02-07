@@ -20,9 +20,9 @@ public class Trip {
                 String id_country,String link_to_image,Boolean published)
     {
         this.id=id;
-        this.setId_user(id_user);
+        this.id_user=id_user;
         this.name = name;
-        this.setDate(date);
+        this.date=date;
         this.description = description;
         this.link_to_image = link_to_image;
         this.published=published;

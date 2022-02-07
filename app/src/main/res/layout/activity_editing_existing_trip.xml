@@ -10,12 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".EditingExitingTrip">
+        tools:context=".EditingExistingTrip">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="com.example.projekt.EditingExitingTrip">
+            tools:context="com.example.projekt.EditingExistingTrip">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -122,9 +122,7 @@
                                 android:orientation="vertical">
 
 
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+
 
                                     <EditText
                                         android:id="@+id/title"
@@ -132,9 +130,11 @@
                                         android:layout_height="50dp"
                                         android:hint="Title"
                                         android:inputType="text"
+                                        android:textColor="#000000"
+                                        android:textSize="18sp"
+                                        android:fontFamily="sans-serif-light"
                                         android:nextFocusForward="@id/description"
-                                        tools:ignore="SpeakableTextPresentCheck" />
-                                </com.google.android.material.textfield.TextInputLayout>
+                                         />
 
                                 <View
                                     android:layout_width="match_parent"
@@ -150,18 +150,12 @@
                                 android:layout_marginTop="1dp"
                                 android:orientation="vertical">
 
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
-
                                     <EditText
                                         android:id="@+id/description"
                                         android:layout_width="match_parent"
                                         android:layout_height="50dp"
                                         android:hint="Description"
                                         tools:ignore="SpeakableTextPresentCheck" />
-                                </com.google.android.material.textfield.TextInputLayout>
 
 
                                 <View

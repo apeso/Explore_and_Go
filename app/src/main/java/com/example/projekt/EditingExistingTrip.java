@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,13 +27,11 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -46,7 +45,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 
-public class EditingExitingTrip extends AppCompatActivity {
+public class EditingExistingTrip extends AppCompatActivity {
     ImageView img,addNewImage;
     ProgressBar progressBar;
     BottomNavigationView bottomNavigationView;
@@ -64,7 +63,7 @@ public class EditingExitingTrip extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editing_exiting_trip);
+        setContentView(R.layout.activity_editing_existing_trip);
         mAuth = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
         fStorage= FirebaseStorage.getInstance().getReference();
@@ -81,7 +80,7 @@ public class EditingExitingTrip extends AppCompatActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                Toast.makeText(EditingExitingTrip.this,"Select country first",Toast.LENGTH_LONG).show();
+                Toast.makeText(EditingExistingTrip.this,"Select country first",Toast.LENGTH_LONG).show();
                 return;
             }
         });
@@ -142,13 +141,14 @@ public class EditingExitingTrip extends AppCompatActivity {
         });
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String value = extras.getString("key");
-            //Toast.makeText(EditingExitingTrip.this,value,Toast.LENGTH_LONG).show();
-            fillForm(value);
+            String id_trip = extras.getString("key");
+            fillForm(id_trip);
         }
     }
 
     private void fillForm(String key) {
+        Log.i("kate",key);
+
         DocumentReference documentReference = fstore.collection("trips").document(key);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
@@ -160,12 +160,13 @@ public class EditingExitingTrip extends AppCompatActivity {
                 Integer year=Integer.parseInt(date2[2]);
                 Integer month=Integer.parseInt(date2[1]);
                 Integer day=Integer.parseInt(date2[0]);
-                datePicker.updateDate(year,month,day);
-
-                //dovrsit cu kasnije
-
-
-
+                try {
+                    datePicker.updateDate(year,month-1,day);
+                }catch(Exception e) {
+                    Log.i("kate","nece da ucita datum");
+                }
+                publicChb.setChecked(value.getBoolean("published"));
+                //gradovi ostaju kako su pocetni zadani jer je pretesko mi ucitat ove jer se spremaju po vrijednosti a ne po poziciji
 
             }
         });
@@ -274,7 +275,7 @@ public class EditingExitingTrip extends AppCompatActivity {
             }
         }
         else {
-            Toast.makeText(EditingExitingTrip.this,"Nije ucitan json file",Toast.LENGTH_LONG).show();
+            Toast.makeText(EditingExistingTrip.this,"Nije ucitan json file",Toast.LENGTH_LONG).show();
             return;
 
         }
@@ -299,7 +300,7 @@ public class EditingExitingTrip extends AppCompatActivity {
             }
         }
         else {
-            Toast.makeText(EditingExitingTrip.this,"Nije ucitan json file",Toast.LENGTH_LONG).show();
+            Toast.makeText(EditingExistingTrip.this,"Nije ucitan json file",Toast.LENGTH_LONG).show();
             return;
         }
     }
@@ -319,7 +320,7 @@ public class EditingExitingTrip extends AppCompatActivity {
         return json;
     }
     public  void showMessage(String message){
-        Toast.makeText(EditingExitingTrip.this,message,Toast.LENGTH_LONG).show();
+        Toast.makeText(EditingExistingTrip.this,message,Toast.LENGTH_LONG).show();
     }
     private void updateNavigationBarState(int actionId){
         MenuItem item = bottomNavigationView.getMenu().findItem(actionId);

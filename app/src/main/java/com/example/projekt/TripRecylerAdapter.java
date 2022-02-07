@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,15 +19,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -55,7 +49,6 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
 
         //postavljamo layout za oni layout sta smo stvorili
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.blog_list_item, parent, false);
-
         context = parent.getContext();
 
         mAuth = FirebaseAuth.getInstance();
@@ -87,7 +80,7 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
         holder.setDateText(dateData);
 
         holder.setTripImage(trip_list.get(position).getLink_to_image());
-        holder.tripImageView.setOnClickListener(view -> editTrip(trip_list.get(position).getId()));
+        //holder.tripImageView.setOnClickListener(view -> editTrip(trip_list.get(position).getId()));
 
 
         fStorage.child("users/"+userId+"/profile.jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
@@ -102,22 +95,15 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
             }
         });
 
+
     }
 
-    private void editTrip(String id) {
-        //Intent je klasa-najčešće je koristimo za startActivity
-        Intent editingTripIntent = new Intent(context, EditingExitingTrip.class);
-        editingTripIntent.putExtra("key",id);
-        context.startActivity(editingTripIntent);
-    }
 
     @Override
     public int getItemCount() {
         return trip_list.size();
     }
-
-    public  class ViewHolder extends RecyclerView.ViewHolder{
-
+    public  class ViewHolder extends RecyclerView.ViewHolder {
         private View mView;
         private TextView descView;
         private TextView usernameView;
@@ -128,7 +114,21 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //on click listener za svaki klik na svaki trip u listi tripova
+                    //dohvati id tripa i njega salje sljedećem activityu
+
+                    Intent editingTripIntent = new Intent(context, EditingExistingTrip.class);
+                    String value1=trip_list.get(getAdapterPosition()).getId();
+
+                    editingTripIntent.putExtra("key",value1);
+                    context.startActivity(editingTripIntent);
+                }
+            });
         }
+
         //metode za punjenje inputa sa podacima iz baze --> prvo za opis tripa
         public void setDescText(String descText)
         {
@@ -162,5 +162,7 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
             userImageView = mView.findViewById(R.id.user_image);
             Picasso.get().load(downloadUri).into(userImageView);
         }
+
     }
+
 }

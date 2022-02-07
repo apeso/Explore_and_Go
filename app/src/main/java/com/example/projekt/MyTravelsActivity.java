@@ -118,7 +118,6 @@ public class MyTravelsActivity extends AppCompatActivity {
         blog_list_view.setLayoutManager(new LinearLayoutManager(this));
         blog_list_view.setAdapter(tripRecylerAdapter);
 
-
         CollectionReference trips = fstore.collection("trips");
         Query query = trips.whereEqualTo("user_id", userId);
         //dobij rezultate querija
@@ -141,5 +140,7 @@ public class MyTravelsActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
 

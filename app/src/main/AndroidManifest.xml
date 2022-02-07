@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projekt">
         <activity
-            android:name=".EditingExitingTrip"
+            android:name=".EditingExistingTrip"
             android:exported="false" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

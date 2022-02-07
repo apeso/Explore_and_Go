@@ -121,11 +121,6 @@
                                 android:layout_marginTop="0dp"
                                 android:orientation="vertical">
 
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
-
                                     <EditText
                                         android:id="@+id/title"
                                         android:layout_width="match_parent"
@@ -134,7 +129,6 @@
                                         android:inputType="text"
                                         android:nextFocusForward="@id/description"
                                         tools:ignore="SpeakableTextPresentCheck" />
-                                </com.google.android.material.textfield.TextInputLayout>
 
                                 <View
                                     android:layout_width="match_parent"
@@ -150,18 +144,13 @@
                                 android:layout_marginTop="1dp"
                                 android:orientation="vertical">
 
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
-
                                     <EditText
                                         android:id="@+id/description"
                                         android:layout_width="match_parent"
                                         android:layout_height="50dp"
                                         android:hint="Description"
                                         tools:ignore="SpeakableTextPresentCheck" />
-                                </com.google.android.material.textfield.TextInputLayout>
+
 
 
                                 <View
