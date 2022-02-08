@@ -102,4 +102,6 @@ public class Trip {
     public void setCountry(String country) {
         this.country = country;
     }
+
+
 }

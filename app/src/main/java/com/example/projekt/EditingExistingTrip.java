@@ -24,6 +24,8 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +36,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,7 +47,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class EditingExistingTrip extends AppCompatActivity {
     ImageView img,addNewImage;
@@ -51,7 +57,7 @@ public class EditingExistingTrip extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     Spinner spinnerCountry,spinnerCities;
     CheckBox publicChb;
-    Button btnSave;
+    Button btnSave,btnDelete;
     EditText et_title,et_description;
     DatePicker datePicker;
     ActivityResultLauncher<String> activityResultLauncher;
@@ -59,6 +65,7 @@ public class EditingExistingTrip extends AppCompatActivity {
     public FirebaseAuth mAuth;
     public FirebaseFirestore fstore;
     public StorageReference fStorage;
+    public String kljuc="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +102,9 @@ public class EditingExistingTrip extends AppCompatActivity {
         btnSave=(Button) findViewById(R.id.btnSave);
         btnSave.setOnClickListener(view -> saveTrip());
 
+        btnDelete=(Button) findViewById(R.id.btnDelete);
+        btnDelete.setOnClickListener(view -> deleteTrip());
+
         Calendar c = Calendar.getInstance();
         datePicker.setMaxDate(c.getTimeInMillis());
 
@@ -112,54 +122,34 @@ public class EditingExistingTrip extends AppCompatActivity {
             }
         });
 
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
-        bottomNavigationView.setBackground(null);
-        bottomNavigationView.setSelectedItemId(R.id.dos);
-
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.uno:
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        return true;
-                    case R.id.dos:
-                        startActivity(new Intent(getApplicationContext(), NewTripActivity.class));
-                        return true;
-                    case R.id.tres:
-                        startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
-                        return true;
-                    case R.id.cuatro:
-                        Intent i=new Intent(getApplicationContext(), ProfileActivity.class);
-                        startActivity(i);
-                        return true;
-                }
-                updateNavigationBarState(item.getItemId());
-
-                return true;
-            }
-        });
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String id_trip = extras.getString("key");
             fillForm(id_trip);
         }
     }
+    private void deleteTrip() {
+        DocumentReference documentReference = fstore.collection("trips").document(kljuc);
+        documentReference.delete();
+        startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
 
+
+    }
     private void fillForm(String key) {
         Log.i("kate",key);
-
+        kljuc=key;
         DocumentReference documentReference = fstore.collection("trips").document(key);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                Picasso.get().load(value.getString("link_to_image")).into(img);
+                selectedImage=Uri.parse(value.getString("link_to_image"));
                 et_title.setText(value.getString("title"));
                 et_description.setText(value.getString("description"));
-                String date=value.getString("date");
-                String[] date2=date.split("/");
-                Integer year=Integer.parseInt(date2[2]);
-                Integer month=Integer.parseInt(date2[1]);
-                Integer day=Integer.parseInt(date2[0]);
+                String[] date=value.getString("date").split("/");
+                Integer year=Integer.parseInt(date[2]);
+                Integer month=Integer.parseInt(date[1]);
+                Integer day=Integer.parseInt(date[0]);
                 try {
                     datePicker.updateDate(year,month-1,day);
                 }catch(Exception e) {
@@ -196,11 +186,13 @@ public class EditingExistingTrip extends AppCompatActivity {
 
     }
     public void saveTrip() {
+        String key="";
         String title=et_title.getText().toString().trim();
         String description=et_description.getText().toString().trim();
         String date=datePicker.getDayOfMonth()+"/"+(datePicker.getMonth()+1)+"/"+datePicker.getYear();
         String country=spinnerCountry.getSelectedItem().toString();
         String city=spinnerCities.getSelectedItem().toString();
+
         Boolean publicCheckBoxState=publicChb.isChecked();
 
         if (title.isEmpty()) {
@@ -234,11 +226,6 @@ public class EditingExistingTrip extends AppCompatActivity {
             return;
         }
 
-
-        DocumentReference myRef = fstore.collection("trips").document();
-        // get trip unique ID and upadte trip key
-        String key = myRef.getId();
-
         Trip novi_trip=new Trip();
         novi_trip.setId(key);
         novi_trip.setTitle(title);
@@ -248,11 +235,83 @@ public class EditingExistingTrip extends AppCompatActivity {
         novi_trip.setCountry(country);
         novi_trip.setPublished(publicCheckBoxState);
         novi_trip.setLink_to_image(selectedImage.toString());
-
-        //uploadImageAndPostToFirebase(selectedImage,key,novi_trip);
+        if(kljuc!=""){
+            uploadImageAndPostToFirebase(selectedImage,kljuc,novi_trip);
+            Log.i("kate",kljuc+"  slika"+selectedImage.toString());
+        }
+        else Log.i("kate","KLJUC PRAZAN");
 
     }
+    public void uploadImageAndPostToFirebase(Uri imageUri,String key,Trip t){
+        et_title.setVisibility(View.INVISIBLE);
+        et_description.setVisibility(View.INVISIBLE);
+        datePicker.setVisibility(View.INVISIBLE);
+        publicChb.setVisibility(View.INVISIBLE);
+        btnSave.setVisibility(View.INVISIBLE);
+        btnDelete.setVisibility(View.INVISIBLE);
+        spinnerCountry.setVisibility(View.INVISIBLE);
+        spinnerCities.setVisibility(View.INVISIBLE);
+        addNewImage.setVisibility(View.INVISIBLE);
 
+        progressBar.setVisibility(View.VISIBLE);
+
+
+        StorageReference fillRef=fStorage.child("trips/"+"/"+key+"/trip_profile.jpg");
+        fillRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fillRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(img);
+
+                        updatePost(t,key);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(EditingExistingTrip.this,"Image not uploaded!",Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("KATE", "nije odabrana slika"+ e.toString());
+                updatePost(t,key);
+
+            }
+        });
+    }
+    private void updatePost(Trip t,String key){
+        DocumentReference documentReference = fstore.collection("trips").document(key);
+        Map<String, Object> trip = new HashMap<>();
+        trip.put("id",key);
+        trip.put("title", t.getTitle());
+        trip.put("description", t.getdescription());
+        trip.put("date", t.getDate());
+        trip.put("published",t.getPublished());
+        trip.put("country", t.getCountry());
+        trip.put("city", t.getCity());
+        trip.put("user_id",mAuth.getCurrentUser().getUid());
+        trip.put("link_to_image",t.getLink_to_image());
+        documentReference.set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.i("KATE","success");
+                Toast.makeText(EditingExistingTrip.this, "Trip successfully saved!", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("KATE", "failure"+ e.toString());
+                Toast.makeText(EditingExistingTrip.this, "Failed!", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
+            }
+        });
+    }
     private void fillSpinnerWithCountries() {
         ArrayList<String> list=new ArrayList<>();
         String json=loadJSONFromAsset();
