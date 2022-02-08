@@ -99,7 +99,7 @@ public class MyTravelsActivity extends AppCompatActivity {
         blog_list_view.setAdapter(tripRecylerAdapter);
 
         CollectionReference trips = fstore.collection("trips");
-        Query query = trips.whereEqualTo("user_id", userId);
+        Query query = trips.whereEqualTo("id_user", userId);
         //dobij rezultate querija
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

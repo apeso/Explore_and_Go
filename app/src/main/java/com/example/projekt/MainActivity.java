@@ -107,10 +107,8 @@ public class MainActivity extends AppCompatActivity {
         all_trips_list_view.setLayoutManager(new LinearLayoutManager(this));
         all_trips_list_view.setAdapter(allTripsRecylerAdapter);
 
-        Log.d("KATE", userId);
         CollectionReference trips = fstore.collection("trips");
-        Query query = trips.whereEqualTo("published", true);
-        //Query query = trips.whereEqualTo("published", true).whereNotEqualTo("user_id", userId);
+        Query query= trips.whereEqualTo("published", true);
         //dobij rezultate querija
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -119,10 +117,14 @@ public class MainActivity extends AppCompatActivity {
                 {
                     for(QueryDocumentSnapshot document : task.getResult())
                     {
-                        Log.d("KATE", document.getId());
                         Trip trip = document.toObject(Trip.class);
-                        all_trips_list.add(trip);
-                        allTripsRecylerAdapter.notifyDataSetChanged();
+
+                        //if(userId!=trip.getId_user){
+                        if(!userId.equals(trip.getId_user())){
+                            all_trips_list.add(trip);
+                            allTripsRecylerAdapter.notifyDataSetChanged();
+
+                        }
                     }
 
                 }

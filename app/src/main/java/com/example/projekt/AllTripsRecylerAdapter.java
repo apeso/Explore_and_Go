@@ -88,7 +88,7 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
         fstore.collection("trips").document(all_trips_list.get(position).getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user1 = documentSnapshot.getString("user_id");
+                user1 = documentSnapshot.getString("id_user");
                 fstore.collection("users").document(user1).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -113,7 +113,7 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
         fstore.collection("trips").document(all_trips_list.get(position).getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user2 = documentSnapshot.getString("user_id");
+                user2 = documentSnapshot.getString("id_user");
                 fStorage.child("users/"+user2+"/profile.jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {

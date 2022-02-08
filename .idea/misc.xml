@@ -5,9 +5,10 @@
       <map>
         <entry key="..\:/Users/Antonia/.android/ExploreandGO/Explore_and_Go/app/src/main/res/layout/activity_new_trip.xml" value="0.20277777777777778" />
         <entry key="..\:/Users/Antonia/.android/ExploreandGO/Explore_and_Go/app/src/main/res/layout/blog_list_item.xml" value="0.1" />
-        <entry key="..\:/Users/Antonia/.android/ExploreandGo/Explore_and_Go/app/src/main/res/layout/activity_editing_existing_trip.xml" value="0.1" />
+        <entry key="..\:/Users/Antonia/.android/ExploreandGo/Explore_and_Go/app/src/main/res/layout/activity_editing_existing_trip.xml" value="0.264" />
         <entry key="..\:/Users/Antonia/.android/ExploreandGo/Explore_and_Go/app/src/main/res/layout/activity_editing_exiting_trip.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Antonia/.android/ExploreandGo/Explore_and_Go/app/src/main/res/layout/activity_new_trip.xml" value="0.25" />
+        <entry key="..\:/Users/Antonia/.android/ExploreandGo/Explore_and_Go/app/src/main/res/layout/activity_profile.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Antonia/.android/ExploreandGo/Explore_and_Go/app/src/main/res/layout/activity_travels.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Antonia/.android/ExploreandGo/Explore_and_Go/app/src/main/res/layout/blog_list_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/drawable/circle.xml" value="0.14351851851851852" />
@@ -16,15 +17,14 @@
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/drawable/ic_launcher_background.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/drawable/selector.xml" value="0.22685185185185186" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_login.xml" value="0.1" />
-        <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_main.xml" value="0.19649122807017544" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_maps.xml" value="0.1328125" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_new_trip.xml" value="0.264" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_profil.xml" value="0.1" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_profile.xml" value="0.264" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_register.xml" value="0.1" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/activity_travels.xml" value="0.2" />
-        <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/all_trips_list_item.xml" value="0.2" />
-        <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/blog_list_item.xml" value="0.33236994219653176" />
+        <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/blog_list_item.xml" value="0.36330935251798563" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/menu/bottom_nav.xml" value="0.1259259259259259" />
         <entry key="..\:/Users/Katarina/AndroidStudioProjects/projekt/app/src/main/res/menu/exit_menu.xml" value="0.1" />

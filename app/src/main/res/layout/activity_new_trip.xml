@@ -121,14 +121,14 @@
                                 android:layout_marginTop="0dp"
                                 android:orientation="vertical">
 
-                                    <EditText
-                                        android:id="@+id/title"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="50dp"
-                                        android:hint="Title"
-                                        android:inputType="text"
-                                        android:nextFocusForward="@id/description"
-                                        tools:ignore="SpeakableTextPresentCheck" />
+                                <EditText
+                                    android:id="@+id/title"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Title"
+                                    android:inputType="text"
+                                    android:nextFocusForward="@id/description"
+                                    tools:ignore="SpeakableTextPresentCheck" />
 
                                 <View
                                     android:layout_width="match_parent"
@@ -144,12 +144,12 @@
                                 android:layout_marginTop="1dp"
                                 android:orientation="vertical">
 
-                                    <EditText
-                                        android:id="@+id/description"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="50dp"
-                                        android:hint="Description"
-                                        tools:ignore="SpeakableTextPresentCheck" />
+                                <EditText
+                                    android:id="@+id/description"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Description"
+                                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
 
 
@@ -318,15 +318,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/framecontainer" >
+
                 <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:id="@+id/coordinator"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="false">
+
                     <com.google.android.material.bottomappbar.BottomAppBar
                         android:id="@+id/bottomappbar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom">
+
                         <com.google.android.material.bottomnavigation.BottomNavigationView
                             android:id="@+id/bottomnavigationbar"
                             android:layout_width="match_parent"

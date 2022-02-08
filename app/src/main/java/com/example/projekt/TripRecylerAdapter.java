@@ -73,22 +73,10 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
         String dateData = trip_list.get(position).getDate();
         holder.setDateText(dateData);
 
+        String location = trip_list.get(position).getCity()+","+trip_list.get(position).getCountry();
+        holder.setLocationText(location);
+
         holder.setTripImage(trip_list.get(position).getLink_to_image());
-        //holder.tripImageView.setOnClickListener(view -> editTrip(trip_list.get(position).getId()));
-
-
-        fStorage.child("users/"+userId+"/profile.jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    userUri = task.getResult();
-                    holder.setUserImage(userUri);
-                } else {
-                    Log.d("KATE", "neuspješno dohvaćanje user image!");
-                }
-            }
-        });
-
 
     }
 
@@ -102,6 +90,7 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
         private TextView descView;
         private TextView usernameView;
         private TextView dateView;
+        private TextView locationView;
         private ImageView tripImageView;
         private ImageView userImageView;
 
@@ -143,7 +132,12 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
             dateView = mView.findViewById(R.id.datum_objave);
             dateView.setText(dateText);
         }
-
+        //za lokaciju
+        public void setLocationText(String locationText)
+        {
+            locationView = mView.findViewById(R.id.lokacija);
+            locationView.setText(locationText);
+        }
 
         public void setTripImage(String downloadUri)
         {
@@ -151,11 +145,6 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
             Picasso.get().load(downloadUri).into(tripImageView);
         }
 
-        public void setUserImage(Uri downloadUri)
-        {
-            userImageView = mView.findViewById(R.id.user_image);
-            Picasso.get().load(downloadUri).into(userImageView);
-        }
 
     }
 

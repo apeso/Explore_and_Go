@@ -205,7 +205,7 @@ public class NewTripActivity extends AppCompatActivity{
                         trip.put("published",t.getPublished());
                         trip.put("country", t.getCountry());
                         trip.put("city", t.getCity());
-                        trip.put("user_id",mAuth.getCurrentUser().getUid());
+                        trip.put("id_user",mAuth.getCurrentUser().getUid());
                         trip.put("link_to_image",uri.toString());
                         documentReference.set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

@@ -125,13 +125,14 @@
                                 <EditText
                                     android:id="@+id/title"
                                     android:layout_width="match_parent"
-                                    android:layout_height="50dp"
+                                    android:layout_height="wrap_content"
                                     android:fontFamily="sans-serif-light"
                                     android:hint="Title"
                                     android:inputType="text"
                                     android:nextFocusForward="@id/description"
                                     android:textColor="#000000"
-                                    android:textSize="18sp" />
+                                    android:textSize="18sp"
+                                    tools:ignore="TouchTargetSizeCheck" />
 
                                 <View
                                     android:layout_width="match_parent"
@@ -150,9 +151,9 @@
                                 <EditText
                                     android:id="@+id/description"
                                     android:layout_width="match_parent"
-                                    android:layout_height="50dp"
+                                    android:layout_height="wrap_content"
                                     android:hint="Description"
-                                    tools:ignore="SpeakableTextPresentCheck" />
+                                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
 
                                 <View

@@ -197,7 +197,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
         ArrayList<Trip> trip_list = new ArrayList<>();
         CollectionReference trips = fstore.collection("trips");
-        Query query = trips.whereEqualTo("user_id", userId);
+        Query query = trips.whereEqualTo("id_user", userId);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
