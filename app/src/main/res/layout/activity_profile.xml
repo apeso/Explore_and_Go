@@ -25,44 +25,66 @@
                 android:paddingBottom="0dp">
                 <!--bilo je grad za background-->
 
-                <RelativeLayout
-                    android:id="@+id/imgUser"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"
-                    >
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/imgUserProfileImage"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_marginStart="9dp"
-                        android:layout_marginTop="9dp"
-                        android:layout_marginEnd="9dp"
-                        android:layout_marginBottom="9dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/grad"
-                        android:padding="3dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/default_profile" />
-                    <!--ili centerInside za scaleType-->
+                        android:id="@+id/img"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:layout_marginTop="16dp"
+                        android:background="#2d2d2d"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-                </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/add"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@drawable/circle"
+                        android:padding="10dp"
+                        app:layout_constraintBottom_toBottomOf="@id/img"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/img"
+                        app:srcCompat="@drawable/ic_baseline_edit_24" />
 
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/imgUser"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="15sp"
-                    android:fontFamily="sans-serif-light"
-                    android:text=""
-                    android:textColor="@color/white"
-                    android:textSize="25dp" />
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/circle"
+                        android:padding="4dp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@id/img"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/img" />
 
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_below="@+id/img"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="sans-serif-light"
+                        android:text="ghjkl"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/add" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </RelativeLayout>
 
@@ -78,6 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:id="@+id/pub"
                     android:background="@color/followersBg"
                     android:gravity="center"
                     android:paddingBottom="5dp"
@@ -178,6 +201,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Name"
+                            android:layout_marginTop="10dp"
                             android:textColor="@color/headings"
                             android:textSize="13sp" />
 
@@ -329,13 +353,14 @@
                             android:layout_gravity="center_vertical"
                             android:id="@+id/btnResetPassword"
                             android:background="@color/colorPrimaryDark"
+                            android:layout_marginBottom="10dp"
                             />
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginBottom="20dp"
                             android:background="@color/grey" />
 
                     </LinearLayout>
@@ -347,11 +372,13 @@
                 android:id="@+id/coordinator"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <com.google.android.material.bottomappbar.BottomAppBar
                     android:id="@+id/bottomappbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom">
+
                     <com.google.android.material.bottomnavigation.BottomNavigationView
                         android:id="@+id/bottomnavigationbar"
                         android:layout_width="match_parent"

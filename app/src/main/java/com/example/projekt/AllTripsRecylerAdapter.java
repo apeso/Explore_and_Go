@@ -3,14 +3,21 @@ package com.example.projekt;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 //import com.bumptech.glide.Glide;
@@ -44,6 +51,9 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
     public String userId;
     public Uri userUri;
     String locGradData;
+    String user1;
+    String user2;
+    TextView descView;
 
     @NonNull
     @Override
@@ -68,6 +78,8 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
 
         String descData = all_trips_list.get(position).getdescription();
         holder.setDescText(descData);
+        if(descView.getText().length()>=135){
+            makeTextViewResizable(descView, 3, "...Read More", true);}
 
         String titleData = all_trips_list.get(position).getTitle();
         holder.setTitleText(titleData);
@@ -76,7 +88,7 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
         fstore.collection("trips").document(all_trips_list.get(position).getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String user1 = documentSnapshot.getString("user_id");
+                user1 = documentSnapshot.getString("user_id");
                 fstore.collection("users").document(user1).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -89,28 +101,33 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
 
         String dateData = all_trips_list.get(position).getDate();
         holder.setDateText(dateData);
-
         locGradData = all_trips_list.get(position).getCity();
+
         String locDrzavaData = all_trips_list.get(position).getCountry();
         holder.setLocText(locGradData+", "+locDrzavaData);
 
         holder.setTripImage(all_trips_list.get(position).getLink_to_image());
 
-        fStorage.child("users/"+userId+"/profile.jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+
+        //s obzirom da username nije spremljen u trip, moramo prvo dohvatit po user_idu koji je u tripu
+        fstore.collection("trips").document(all_trips_list.get(position).getId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    userUri = task.getResult();
-                    holder.setUserImage(userUri);
-                } else {
-                    Log.d("KATE", "neuspješno dohvaćanje user image!");
-                }
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                user2 = documentSnapshot.getString("user_id");
+                fStorage.child("users/"+user2+"/profile.jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            userUri = task.getResult();
+                            holder.setUserImage(userUri);
+                        } else {
+                            Log.d("KATE", "neuspješno dohvaćanje user image!");
+                        }
+                    }
+                });
             }
         });
-
-
     }
-
 
     @Override
     public int getItemCount() {
@@ -119,7 +136,7 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
 
     public  class ViewHolder extends RecyclerView.ViewHolder {
         private View mView;
-        private TextView descView;
+        //private TextView descView;
         private TextView usernameView;
         private TextView dateView;
         private TextView titleView;
@@ -187,7 +204,64 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
             userImageView = mView.findViewById(R.id.user_image);
             Picasso.get().load(downloadUri).into(userImageView);
         }
+    }
+    public static void makeTextViewResizable(final TextView tv, final int maxLine, final String expandText, final boolean viewMore) {
 
+        if (tv.getTag() == null) {
+            tv.setTag(tv.getText());
+        }
+        ViewTreeObserver vto = tv.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onGlobalLayout() {
+                String text;
+                int lineEndIndex;
+                ViewTreeObserver obs = tv.getViewTreeObserver();
+                obs.removeOnGlobalLayoutListener(this);
+
+                if (maxLine == 0) {
+                    lineEndIndex = tv.getLayout().getLineEnd(0);
+                    text = tv.getText().subSequence(0, lineEndIndex - expandText.length() + 1) + " " + expandText;
+                } else if (maxLine > 0 && tv.getLineCount() >= maxLine) {
+                    lineEndIndex = tv.getLayout().getLineEnd(maxLine - 1);
+                    text = tv.getText().subSequence(0, lineEndIndex - expandText.length() + 1) + " " + expandText;
+                } else {
+                    lineEndIndex = tv.getLayout().getLineEnd(tv.getLayout().getLineCount() - 1);
+                    text = tv.getText().subSequence(0, lineEndIndex) + " " + expandText;
+                }
+                tv.setText(text);
+                tv.setMovementMethod(LinkMovementMethod.getInstance());
+                tv.setText(
+                        addClickablePartTextViewResizable(new SpannableString(tv.getText().toString()), tv, lineEndIndex, expandText,
+                                viewMore), TextView.BufferType.SPANNABLE);
+            }
+        });
+    }
+
+    private static SpannableStringBuilder addClickablePartTextViewResizable(final Spanned strSpanned, final TextView tv,
+                                                                            final int maxLine, final String spanableText, final boolean viewMore) {
+        String str = strSpanned.toString();
+        SpannableStringBuilder ssb = new SpannableStringBuilder(strSpanned);
+
+        if (str.contains(spanableText)) {
+            ssb.setSpan(new MySpannable(false){
+                @Override
+                public void onClick(View widget) {
+                    tv.setLayoutParams(tv.getLayoutParams());
+                    tv.setText(tv.getTag().toString(), TextView.BufferType.SPANNABLE);
+                    tv.invalidate();
+                    if (viewMore) {
+                        makeTextViewResizable(tv, -1, " Read Less", false);
+                    } else {
+                        makeTextViewResizable(tv, 3, "...Read More", true);
+                    }
+                }
+            }, str.indexOf(spanableText), str.indexOf(spanableText) + spanableText.length(), 0);
+
+        }
+        return ssb;
     }
 
 }

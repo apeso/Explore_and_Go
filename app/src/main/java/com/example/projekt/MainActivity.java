@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     public String userId;
     public FirebaseAuth mAuth;
 
+    Button sort;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,15 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         userId=mAuth.getCurrentUser().getUid();
         user=mAuth.getCurrentUser();
+
+        sort = (Button) findViewById(R.id.btnSort);
+
+        sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sortiraj();
+            }
+        });
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
         bottomNavigationView.setBackground(null);
@@ -96,10 +107,10 @@ public class MainActivity extends AppCompatActivity {
         all_trips_list_view.setLayoutManager(new LinearLayoutManager(this));
         all_trips_list_view.setAdapter(allTripsRecylerAdapter);
 
+        Log.d("KATE", userId);
         CollectionReference trips = fstore.collection("trips");
-        //promijeni u ovo
-        //Query query = trips.whereEqualTo("published", true).whereNotEqualTo("user_id", userId);
         Query query = trips.whereEqualTo("published", true);
+        //Query query = trips.whereEqualTo("published", true).whereNotEqualTo("user_id", userId);
         //dobij rezultate querija
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -108,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     for(QueryDocumentSnapshot document : task.getResult())
                     {
+                        Log.d("KATE", document.getId());
                         Trip trip = document.toObject(Trip.class);
                         all_trips_list.add(trip);
                         allTripsRecylerAdapter.notifyDataSetChanged();
@@ -134,5 +146,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
         bottomNavigationView.getMenu().getItem(0).setChecked(true);
+    }
+
+    public void sortiraj()
+    {
+        Comparator<Trip> dateSorter
+                = (o1, o2) -> o2.getDate().compareTo(o1.getDate());
+        Collections.sort(all_trips_list,dateSorter);
+        allTripsRecylerAdapter.notifyDataSetChanged();
     }
 }

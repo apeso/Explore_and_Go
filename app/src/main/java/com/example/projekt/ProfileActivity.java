@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Patterns;
@@ -64,7 +65,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private Button btnSaveChanges,btnResetPassword;
     private TextView tvName,txtPublishedPosts,txtPrivatePosts;
-    private ImageView profileImage,btnChangeProfileImage;
+    private ImageView profileImage,btnChangeProfileImage, addNew;
     private TextView txtPublished, txtPrivate;
     public FirebaseAuth mAuth;
     public FirebaseFirestore fstore;
@@ -116,12 +117,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        profileImage=(ImageView) findViewById(R.id.imgUserProfileImage);
+        profileImage= (ImageView) findViewById(R.id.img);
+        addNew = (ImageView) findViewById(R.id.add);
         tvName = (TextView) findViewById(R.id.tv_name);
         etName = (EditText) findViewById(R.id.txtNameInput);
         etSurname = (EditText) findViewById(R.id.txtSurnameInput);
         etUsername = (EditText) findViewById(R.id.txtusernameInput);
         etEmail = (EditText) findViewById(R.id.txtemailInput);
+        progressBar=(ProgressBar) findViewById(R.id.progressBar);
 
         txtPrivate = (TextView) findViewById(R.id.txtPrivatePosts);
         txtPublished = (TextView) findViewById(R.id.txtPublishedPosts);
@@ -135,7 +138,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         btnSaveChanges.setOnClickListener(view -> saveChanges());
         btnResetPassword.setOnClickListener(view -> resetPassword());
-        //btnChangeProfileImage.setOnClickListener(view -> changeProfileImage());
+        addNew.setOnClickListener(view -> changeProfileImage());
 
 
         //ovo je launcher za otvorit galeriju slika
@@ -144,6 +147,8 @@ public class ProfileActivity extends AppCompatActivity {
         public void onActivityResult(Uri result) {
             Toast.makeText(ProfileActivity.this,"Image trying!",Toast.LENGTH_LONG).show();
             profileImage.setImageURI(result);
+            progressBar.setVisibility(View.INVISIBLE);
+            addNew.setVisibility(View.VISIBLE);
             uploadImageToFirebase(result);
         }
         });
@@ -165,9 +170,9 @@ public class ProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId())
         {
-            case R.id.item1:
-                changeProfileImage();
-                return true;
+            //case R.id.item1:
+                //changeProfileImage();
+                //return true;
             case R.id.item2:
                 logoutClick();
                 return true;
@@ -242,28 +247,8 @@ public class ProfileActivity extends AppCompatActivity {
         catch (Exception e){
             Toast.makeText(this,"Nije jpg",Toast.LENGTH_LONG).show();
         }
-
-        //sad tribamo napravit query koji ce izbrojat koliko ima published a koliko private
-        CollectionReference tripsRef = fstore.collection("trips");
-        //Query queryPublished = tripsRef.whereEqualTo("published", true);
-
-        Query queryPrivate = tripsRef.whereEqualTo("published", false);
-
-        //dobij rezultate querija
-/*        queryPrivate.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful())
-                {
-                    for(QueryDocumentSnapshot document : task.getResult())
-                    {
-                        counter++;
-                    }
-                    txtPrivate.setText(counter);
-                }
-            }
-        });*/
     }
+
     private void saveChanges(){
         String name = etName.getText().toString().trim();
         String surname = etSurname.getText().toString().trim();
@@ -341,9 +326,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void changeProfileImage(){
         //otvara galeriju slika na uređaju
-        Toast.makeText(ProfileActivity.this,"pokusava otvorit galeriju!",Toast.LENGTH_LONG).show();
+        addNew.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+        //Toast.makeText(ProfileActivity.this,"pokusava otvorit galeriju!",Toast.LENGTH_LONG).show();
         activityResultLauncher.launch("image/*");
-
+        onBackPressed();
     }
     public void logoutClick(){
         //logout,klikom na ikonicu logout vraća nas kod na login stranicu
