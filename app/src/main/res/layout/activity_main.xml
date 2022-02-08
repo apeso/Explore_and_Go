@@ -1,23 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="#F8F3F3"
     android:orientation="vertical">
 
-    <Button
+    <LinearLayout
+        android:id="@+id/radiogroupContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnSort"
-        android:text="Sort"/>
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/main_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal">
+
+
+           <AutoCompleteTextView
+
+               android:id="@+id/autoCompleteTextView"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignParentLeft="true"
+               android:layout_below="@+id/textView"
+               android:layout_marginLeft="5dp"
+               android:layout_marginTop="0dp"
+               android:ems="10"
+               android:text="">
+
+           </AutoCompleteTextView>
+           <ImageView
+
+               android:id="@+id/imageView2"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               app:srcCompat="@drawable/ic_baseline_search_24" />
+
+       </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/radioGroupSort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/main_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="71dp">
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="Najnovije" />
+
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Najstarije" />
+
+        </RadioGroup>
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/framecontainer"
-        app:layout_constraintTop_toBottomOf="@+id/btnSort">
+        app:layout_constraintTop_toBottomOf="@+id/radiogroupContainer">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/all_trips_list_view"
