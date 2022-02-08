@@ -67,14 +67,8 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
         String descData = trip_list.get(position).getdescription();
         holder.setDescText(descData);
 
-        //s obzirom da username nije spremljen u trip, moramo prvo dohvatit
-        fstore.collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String user_name = documentSnapshot.getString("username");
-                holder.setUsernameText(user_name);
-            }
-        });
+        String title = trip_list.get(position).getTitle();
+        holder.setTitleText(title);
 
         String dateData = trip_list.get(position).getDate();
         holder.setDateText(dateData);
@@ -137,10 +131,10 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
         }
 
         //pa username
-        public void setUsernameText(String usernameText)
+        public void setTitleText(String titleText)
         {
             usernameView = mView.findViewById(R.id.username_main);
-            usernameView.setText(usernameText);
+            usernameView.setText(titleText);
         }
 
         //za datum
