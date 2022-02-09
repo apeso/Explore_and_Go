@@ -24,6 +24,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView all_trips_list_view;
     List<Trip> all_trips_list;
-    private AllTripsRecylerAdapter allTripsRecylerAdapter;
+    private AllTripsRecylerAdapter allTripsRecylerAdapter,allTripsRecylerAdapter2;
 
     FirebaseFirestore fstore;
     public FirebaseUser user;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     public FirebaseAuth mAuth;
     private RadioGroup radioGroupSort;
     private RadioButton radioButtonSortNovo,radioButtonSortStaro;
+    private ImageView searchView;
 
 
 
@@ -136,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         radioGroupSort=(RadioGroup)findViewById(R.id.radioGroupSort);
         //najnovije
         radioButtonSortNovo=(RadioButton) findViewById(R.id.radioButton2);
@@ -160,6 +163,35 @@ public class MainActivity extends AppCompatActivity {
         actv.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
         actv.setTextColor(Color.BLACK);
 
+        searchView=(ImageView) findViewById(R.id.imgSearch);
+        ArrayList<Trip> lista_traženih=new ArrayList<>();
+
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lista_traženih.clear();
+                String inputText=actv.getText().toString();
+                allTripsRecylerAdapter2 = new AllTripsRecylerAdapter(lista_traženih);
+                all_trips_list_view.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                all_trips_list_view.setAdapter(allTripsRecylerAdapter2);
+                if (!lista_pojmova.contains(inputText.toLowerCase())){
+                    Toast.makeText(MainActivity.this, "Ništa ne odgovara traženom pojmu!", Toast.LENGTH_SHORT).show();
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+                }
+                else {
+                    for(Trip t:all_trips_list){
+                        if(t.getCountry().toLowerCase().equals(inputText) || t.getCity().toLowerCase().equals(inputText)){
+                            Log.i("kate",t.getCity());
+                            lista_traženih.add(t);
+
+                            allTripsRecylerAdapter2.notifyDataSetChanged();
+                        }
+                    }
+                }
+            }
+        });
         //dovrsit sta se dogodi klikom na search
 
 
