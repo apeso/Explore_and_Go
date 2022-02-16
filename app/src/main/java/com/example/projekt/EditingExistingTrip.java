@@ -57,17 +57,18 @@ public class EditingExistingTrip extends AppCompatActivity {
     ImageView img,addNewImage;
     ProgressBar progressBar;
     BottomNavigationView bottomNavigationView;
-    Spinner spinnerCountry,spinnerCities;
     CheckBox publicChb;
     Button btnSave,btnDelete;
     EditText et_title,et_description;
     DatePicker datePicker;
     ActivityResultLauncher<String> activityResultLauncher;
     Uri selectedImage;
+    Uri novo_odabrana_slika=null;
     public FirebaseAuth mAuth;
     public FirebaseFirestore fstore;
     public StorageReference fStorage;
     public String kljuc="";
+    public String city,country;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,22 +78,6 @@ public class EditingExistingTrip extends AppCompatActivity {
         fstore = FirebaseFirestore.getInstance();
         fStorage= FirebaseStorage.getInstance().getReference();
 
-        spinnerCountry=(Spinner) findViewById(R.id.spinnerCountry);
-        spinnerCities=(Spinner) findViewById(R.id.spinnerCities);
-        fillSpinnerWithCountries();
-        spinnerCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(spinnerCountry.getSelectedItem()!=null){
-                    fillSpinnerWithCities(spinnerCountry.getSelectedItem().toString());
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                Toast.makeText(EditingExistingTrip.this,"Select country first",Toast.LENGTH_LONG).show();
-                return;
-            }
-        });
 
         img=(ImageView) findViewById(R.id.img);
         addNewImage=(ImageView) findViewById(R.id.add);
@@ -117,7 +102,7 @@ public class EditingExistingTrip extends AppCompatActivity {
             @Override
             public void onActivityResult(Uri result) {
                 img.setImageURI(result);
-                selectedImage=result;
+                novo_odabrana_slika=result;
                 progressBar.setVisibility(View.INVISIBLE);
                 addNewImage.setVisibility(View.VISIBLE);
                 //trenutno necemo pozivati upload na bazu jer prvo cemo pricekati da korisnik klikne save button
@@ -151,6 +136,8 @@ public class EditingExistingTrip extends AppCompatActivity {
                 et_title.setText(value.getString("title"));
                 et_description.setText(value.getString("description"));
                 String[] date=value.getString("date").split("/");
+                city=value.getString("city");
+                country=value.getString("country");
                 Integer year=Integer.parseInt(date[2]);
                 Integer month=Integer.parseInt(date[1]);
                 Integer day=Integer.parseInt(date[0]);
@@ -194,8 +181,6 @@ public class EditingExistingTrip extends AppCompatActivity {
         String title=et_title.getText().toString().trim();
         String description=et_description.getText().toString().trim();
         String date=datePicker.getDayOfMonth()+"/"+(datePicker.getMonth()+1)+"/"+datePicker.getYear();
-        String country=spinnerCountry.getSelectedItem().toString();
-        String city=spinnerCities.getSelectedItem().toString();
 
         Boolean publicCheckBoxState=publicChb.isChecked();
 
@@ -214,16 +199,7 @@ public class EditingExistingTrip extends AppCompatActivity {
             datePicker.requestFocus();
             return;
         }
-        if (country.isEmpty()) {
-            //spinnerCountry.setError("Name is required!");
-            spinnerCountry.requestFocus();
-            return;
-        }
-        if (city.isEmpty()) {
-            //spinnerCities.setError("Name is required!");
-            spinnerCities.requestFocus();
-            return;
-        }
+
         if(selectedImage==null){
             img.requestFocus();
             showMessage("Morate odabrati sliku!");
@@ -237,8 +213,10 @@ public class EditingExistingTrip extends AppCompatActivity {
         novi_trip.setDate(date);
         novi_trip.setCity(city);
         novi_trip.setCountry(country);
+
         novi_trip.setPublished(publicCheckBoxState);
         novi_trip.setLink_to_image(selectedImage.toString());
+
         if(kljuc!=""){
             uploadImageAndPostToFirebase(selectedImage,kljuc,novi_trip);
             Log.i("kate",kljuc+"  slika"+selectedImage.toString());
@@ -253,40 +231,47 @@ public class EditingExistingTrip extends AppCompatActivity {
         publicChb.setVisibility(View.INVISIBLE);
         btnSave.setVisibility(View.INVISIBLE);
         btnDelete.setVisibility(View.INVISIBLE);
-        spinnerCountry.setVisibility(View.INVISIBLE);
-        spinnerCities.setVisibility(View.INVISIBLE);
         addNewImage.setVisibility(View.INVISIBLE);
-
         progressBar.setVisibility(View.VISIBLE);
 
+        if(novo_odabrana_slika!=null){
+            //ovo znaci da imamo novu sliku i da nju moramo uploadati
+            StorageReference documentReference = fStorage.child("trips/"+"/"+key+"/trip_profile.jpg");
+            documentReference.delete();
+            //nakon sta smo izbirsali staru refererencu na sliku,kreiramo novu
+            StorageReference fillRef=fStorage.child("trips/"+"/"+key+"/trip_profile.jpg");
+            fillRef.putFile(novo_odabrana_slika).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    fillRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Picasso.get().load(uri).into(img);
+                            t.setLink_to_image(uri.toString());
+                            updatePost(t,key);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(EditingExistingTrip.this,"Image not uploaded!",Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("KATE", "nije odabrana slika"+ e.toString());
+                }
+            });
 
-        StorageReference fillRef=fStorage.child("trips/"+"/"+key+"/trip_profile.jpg");
-        fillRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                fillRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).into(img);
+        }
+        else{
+            //ovo znaci da je zadrzana stara slika
+            //onda je dovoljno samo uplodati ostatka tripa
+            updatePost(t,key);
+        }
 
-                        updatePost(t,key);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(EditingExistingTrip.this,"Image not uploaded!",Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("KATE", "nije odabrana slika"+ e.toString());
-                updatePost(t,key);
-
-            }
-        });
     }
     private void updatePost(Trip t,String key){
         DocumentReference documentReference = fstore.collection("trips").document(key);
@@ -315,72 +300,6 @@ public class EditingExistingTrip extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MyTravelsActivity.class));
             }
         });
-    }
-    private void fillSpinnerWithCountries() {
-        ArrayList<String> list=new ArrayList<>();
-        String json=loadJSONFromAsset();
-
-        if(json!=null){
-            try {
-                JSONObject jsonObj = new JSONObject(json);
-                JSONObject list_cit = jsonObj.getJSONObject("countries");
-
-                Iterator keys=list_cit.keys();
-
-                while (keys.hasNext()){
-                    list.add(keys.next().toString());
-                }
-                ArrayAdapter<String> arrayAdapterofCountries=new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);
-                arrayAdapterofCountries.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerCountry.setAdapter(arrayAdapterofCountries);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            Toast.makeText(EditingExistingTrip.this,"Nije ucitan json file",Toast.LENGTH_LONG).show();
-            return;
-
-        }
-    }
-    private void fillSpinnerWithCities(String selectedItem) {
-        String json=loadJSONFromAsset();
-        if(json!=null){
-            try {
-                JSONObject jsonObj = new JSONObject(json);
-                JSONArray cities = jsonObj.getJSONObject("countries").getJSONArray(selectedItem);
-                ArrayList<String> list=new ArrayList<>();
-
-                for (int i=0;i<cities.length();i++){
-                    list.add(cities.get(i).toString());
-                }
-                ArrayAdapter<String> arrayAdapterofCities=new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);
-                arrayAdapterofCities.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerCities.setAdapter(arrayAdapterofCities);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        else {
-            Toast.makeText(EditingExistingTrip.this,"Nije ucitan json file",Toast.LENGTH_LONG).show();
-            return;
-        }
-    }
-    public String loadJSONFromAsset() {
-        String json = null;
-        try {
-            InputStream is = getApplicationContext().getAssets().open("countries.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
     }
     public  void showMessage(String message){
         Toast.makeText(EditingExistingTrip.this,message,Toast.LENGTH_LONG).show();
