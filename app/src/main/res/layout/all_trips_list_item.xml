@@ -99,6 +99,7 @@
                 app:layout_constraintStart_toEndOf="@+id/loc"
                 app:layout_constraintTop_toBottomOf="@+id/title_trip" />
 
+
             <ImageView
                 android:id="@+id/trip_image"
                 android:layout_width="0dp"

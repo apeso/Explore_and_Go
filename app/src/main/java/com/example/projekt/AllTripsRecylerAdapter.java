@@ -54,6 +54,8 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
     String user1;
     String user2;
     TextView descView;
+    RecyclerView recyclerView;
+    String grad;
 
     @NonNull
     @Override
@@ -104,6 +106,7 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
         locGradData = all_trips_list.get(position).getCity();
 
         String locDrzavaData = all_trips_list.get(position).getCountry();
+        //holder.setLocText(locGradData);
         holder.setLocText(locGradData+", "+locDrzavaData);
 
         holder.setTripImage(all_trips_list.get(position).getLink_to_image());
@@ -152,8 +155,9 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context.getApplicationContext(),MapsActivity.class);
-                    intent.putExtra("city", locGradData);
-                    Log.d("KATE", "karta: "+ locGradData);
+                    //ovdje bi trebalo dohvacat ono sta je napisano u polju grad u itemu u recyleru viewu za koji je stisnuto show on map
+                    intent.putExtra("city", all_trips_list.get(getLayoutPosition()).getCity());
+                    Log.d("KATE", "karta: "+ all_trips_list.get(getLayoutPosition()).getCity());
                     context.startActivity(intent);
                 }
             });
@@ -205,6 +209,8 @@ public class AllTripsRecylerAdapter extends RecyclerView.Adapter<AllTripsRecyler
             Picasso.get().load(downloadUri).into(userImageView);
         }
     }
+
+    //da se ne prikaze cijeli description text ako je predug
     public static void makeTextViewResizable(final TextView tv, final int maxLine, final String expandText, final boolean viewMore) {
 
         if (tv.getTag() == null) {

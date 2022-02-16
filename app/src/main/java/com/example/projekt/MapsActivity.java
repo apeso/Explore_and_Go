@@ -39,6 +39,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ActivityMapsBinding binding;
     private SpinnerActivity spinnerAct;
     private String strCity;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +53,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        Spinner spinner = (Spinner) findViewById(R.id.categories_spinner);
+        //Spinner spinner = (Spinner) findViewById(R.id.categories_spinner);
         //create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.kategorije, android.R.layout.simple_spinner_item);
+        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.kategorije, android.R.layout.simple_spinner_item);
         //specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //apply the adapter to spinner
-        spinner.setAdapter(adapter);
+        //spinner.setAdapter(adapter);
 
-        Intent intent = getIntent();
-        strCity = intent.getStringExtra("city");
+        intent = getIntent();
+
     }
 
     /**
@@ -79,10 +80,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
+        //LatLng sydney = new LatLng(-34, 151);
         //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         //String odb = spinnerAct.odabrano;
+        strCity = intent.getStringExtra("city");
         getLocationFromAddress(strCity);
     }
 
@@ -110,8 +112,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Marker srchMarker = mMap.addMarker(new MarkerOptions().position(latLng).title("Destination"));
 
             //Animate and Zoon on that map location
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+
 
         } catch (IOException e)
         {
@@ -119,4 +121,3 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 }
-

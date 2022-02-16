@@ -73,7 +73,7 @@ public class TripRecylerAdapter extends RecyclerView.Adapter<TripRecylerAdapter.
         String dateData = trip_list.get(position).getDate();
         holder.setDateText(dateData);
 
-        String location = trip_list.get(position).getCity()+","+trip_list.get(position).getCountry();
+        String location = trip_list.get(position).getCity()+", "+trip_list.get(position).getCountry();
         holder.setLocationText(location);
 
         holder.setTripImage(trip_list.get(position).getLink_to_image());

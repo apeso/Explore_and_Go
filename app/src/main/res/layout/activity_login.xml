@@ -9,9 +9,10 @@
     android:gravity="center_horizontal">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
         android:layout_marginTop="80dp"
+        android:layout_weight="0.5"
         app:srcCompat="@drawable/logo"/>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -23,9 +24,9 @@
             android:id="@+id/emailEt"
             android:layout_width="250dp"
             android:layout_height="50dp"
-            android:layout_marginTop="20dp"
             android:background="#ffffff"
             android:hint="@string/email"
+            android:layout_weight="0.5"
             android:inputType="text"
             android:nextFocusForward="@id/passwordEt"
             tools:ignore="SpeakableTextPresentCheck" />
@@ -43,6 +44,7 @@
             android:layout_width="250dp"
             android:layout_height="50dp"
             android:background="#ffffff"
+            android:layout_weight="0.5"
             android:hint="@string/password"
             android:inputType="text"
             tools:ignore="SpeakableTextPresentCheck"
@@ -53,16 +55,17 @@
     <Button
         android:id="@+id/loginBtn"
         android:layout_width="190dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="50dp"
         android:background="#04ea00"
+        android:layout_marginTop="20dp"
         android:text="@string/login"
         tools:ignore="TextContrastCheck" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="5dp"
         android:textColor="#ffffff"
+        android:layout_weight="0.1"
         android:textStyle="bold"
         android:layout_marginTop="20dp"
         android:text="@string/forgot_your_password"
@@ -73,8 +76,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
+        android:layout_weight="0.5"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"

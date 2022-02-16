@@ -121,14 +121,20 @@
                                 android:layout_marginTop="0dp"
                                 android:orientation="vertical">
 
-                                <EditText
-                                    android:id="@+id/title"
+                                <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Title"
-                                    android:inputType="text"
-                                    android:nextFocusForward="@id/description"
-                                    tools:ignore="SpeakableTextPresentCheck" />
+                                    android:layout_height="wrap_content">
+
+                                    <EditText
+                                        android:id="@+id/title"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="#ffffff"
+                                        android:hint="Title"
+                                        android:inputType="text"
+                                        android:nextFocusForward="@id/description"
+                                        tools:ignore="SpeakableTextPresentCheck" />
+                                </com.google.android.material.textfield.TextInputLayout>
 
                                 <View
                                     android:layout_width="match_parent"
@@ -144,12 +150,22 @@
                                 android:layout_marginTop="1dp"
                                 android:orientation="vertical">
 
-                                <EditText
-                                    android:id="@+id/description"
+                                <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Description"
-                                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                                    android:layout_marginTop="20dp"
+                                    android:id="@+id/password_toggle">
+
+                                    <EditText
+                                        android:id="@+id/description"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Description"
+                                        android:background="@color/white"
+                                        android:inputType="textMultiLine"
+                                        tools:ignore="SpeakableTextPresentCheck"
+                                        android:imeOptions="actionDone" />
+                                </com.google.android.material.textfield.TextInputLayout>
 
 
 
@@ -169,6 +185,8 @@
                                         android:id="@+id/datePicker"
                                         android:layout_width="220dp"
                                         android:layout_height="100dp"
+                                        android:layout_marginTop="20dp"
+                                        android:layout_marginBottom="20dp"
                                         android:layout_gravity="center"
                                         android:calendarViewShown="false"
                                         android:datePickerMode="spinner" />
