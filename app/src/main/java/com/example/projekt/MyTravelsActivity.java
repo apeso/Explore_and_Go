@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,6 +51,7 @@ public class MyTravelsActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     RecyclerView blog_list_view;
+    TextView nema;
     List<Trip> trip_list;
     private TripRecylerAdapter tripRecylerAdapter;
 
@@ -65,6 +69,7 @@ public class MyTravelsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         userId=mAuth.getCurrentUser().getUid();
         user=mAuth.getCurrentUser();
+        nema = (TextView) findViewById(R.id.nema);
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnavigationbar);
         bottomNavigationView.setBackground(null);
@@ -108,6 +113,11 @@ public class MyTravelsActivity extends AppCompatActivity {
                 {
                     for(QueryDocumentSnapshot document : task.getResult())
                     {
+                        if(document.getData().size()==0)
+                        {
+                            nema.setVisibility(TextView.VISIBLE);
+                            nema.setText("No trips yet!");
+                        }
                         Trip trip = document.toObject(Trip.class);
                         trip_list.add(trip);
                         Comparator<Trip> dateSorter

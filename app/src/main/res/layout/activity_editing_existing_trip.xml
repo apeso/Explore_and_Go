@@ -152,20 +152,20 @@
                                 android:orientation="vertical">
 
                                 <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/password_toggle"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:id="@+id/password_toggle">
+                                    android:layout_marginTop="20dp">
 
                                     <EditText
                                         android:id="@+id/description"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:hint="Description"
                                         android:background="@color/white"
+                                        android:hint="Description"
+                                        android:imeOptions="actionDone"
                                         android:inputType="textMultiLine"
-                                        tools:ignore="SpeakableTextPresentCheck"
-                                        android:imeOptions="actionDone" />
+                                        tools:ignore="SpeakableTextPresentCheck" />
                                 </com.google.android.material.textfield.TextInputLayout>
 
                                 <View
@@ -302,6 +302,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="15dp"
+                                android:layout_marginBottom="50dp"
                                 android:orientation="horizontal">
 
 

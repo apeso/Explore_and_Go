@@ -330,7 +330,7 @@ public class ProfileActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         //Toast.makeText(ProfileActivity.this,"pokusava otvorit galeriju!",Toast.LENGTH_LONG).show();
         activityResultLauncher.launch("image/*");
-        onBackPressed();
+        //onBackPressed();
     }
     public void logoutClick(){
         //logout,klikom na ikonicu logout vraća nas kod na login stranicu
