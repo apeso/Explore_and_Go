@@ -23,21 +23,22 @@
 
 
            <AutoCompleteTextView
-
+                android:layout_weight="4"
                android:id="@+id/autoCompleteTextView"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:layout_alignParentLeft="true"
                android:layout_below="@+id/textView"
+               android:layout_alignParentLeft="true"
                android:layout_marginLeft="5dp"
                android:layout_marginTop="0dp"
                android:ems="10"
+               android:hint="Unesite željeni grad ili državu.."
                android:text="">
 
            </AutoCompleteTextView>
 
            <ImageView
-
+               android:layout_weight="1"
                android:id="@+id/imgSearch"
                android:layout_width="42dp"
                android:layout_height="34dp"

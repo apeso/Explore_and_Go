@@ -135,12 +135,12 @@ public class EditingExistingTrip extends AppCompatActivity {
                 selectedImage=Uri.parse(value.getString("link_to_image"));
                 et_title.setText(value.getString("title"));
                 et_description.setText(value.getString("description"));
-                String[] date=value.getString("date").split("/");
                 city=value.getString("city");
                 country=value.getString("country");
-                Integer year=Integer.parseInt(date[2]);
+                String[] date=value.getString("date").split("/");
+                Integer year=Integer.parseInt(date[0]);
                 Integer month=Integer.parseInt(date[1]);
-                Integer day=Integer.parseInt(date[0]);
+                Integer day=Integer.parseInt(date[2]);
                 try {
                     datePicker.updateDate(year,month-1,day);
                 }catch(Exception e) {
@@ -180,7 +180,18 @@ public class EditingExistingTrip extends AppCompatActivity {
         String key="";
         String title=et_title.getText().toString().trim();
         String description=et_description.getText().toString().trim();
-        String date=datePicker.getDayOfMonth()+"/"+(datePicker.getMonth()+1)+"/"+datePicker.getYear();
+        String mjesec;
+        if(datePicker.getMonth()<9){
+            mjesec="0"+String.valueOf(datePicker.getMonth()+1);
+        }
+        else{
+            mjesec=""+String.valueOf(datePicker.getMonth()+1);
+        }
+        String date=datePicker.getYear()+"/"+mjesec+"/"+datePicker.getDayOfMonth();
+        String dan=String.valueOf(datePicker.getDayOfMonth());
+        if(dan.length()==1){
+            date=datePicker.getYear()+"/"+mjesec+"/"+"0"+dan;
+        }
 
         Boolean publicCheckBoxState=publicChb.isChecked();
 

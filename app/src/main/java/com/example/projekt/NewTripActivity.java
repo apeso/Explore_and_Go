@@ -245,7 +245,18 @@ public class NewTripActivity extends AppCompatActivity{
     public void saveTrip() {
         String title=et_title.getText().toString().trim();
         String description=et_description.getText().toString().trim();
-        String date=datePicker.getDayOfMonth()+"/"+(datePicker.getMonth()+1)+"/"+datePicker.getYear();
+        String mjesec;
+        if(datePicker.getMonth()<9){
+            mjesec="0"+datePicker.getMonth()+1;
+        }
+        else{
+            mjesec=""+datePicker.getMonth()+1;
+        }
+        String date=datePicker.getYear()+"/"+mjesec+"/"+datePicker.getDayOfMonth();
+        String dan=String.valueOf(datePicker.getDayOfMonth());
+        if(dan.length()==1){
+            date=datePicker.getYear()+"/"+mjesec+"/"+"0"+dan;
+        }
         String country=spinnerCountry.getSelectedItem().toString();
         String city=spinnerCities.getSelectedItem().toString();
         Boolean publicCheckBoxState=publicChb.isChecked();

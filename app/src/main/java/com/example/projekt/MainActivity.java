@@ -42,9 +42,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -132,12 +135,11 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     }
+                    sortirajNajnovij();
 
                 }
-                sortirajNajnovij();
             }
         });
-
 
         radioGroupSort=(RadioGroup)findViewById(R.id.radioGroupSort);
         //najnovije
@@ -217,12 +219,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void sortirajNajnovij()
     {
-        Comparator<Trip> dateSorter= (o1, o2) -> o1.getDate().compareTo(o2.getDate());
+        Comparator<Trip> dateSorter= (o1, o2) -> o2.getDate().compareTo(o1.getDate());
         Collections.sort(all_trips_list,dateSorter);
         allTripsRecylerAdapter.notifyDataSetChanged();
     }
     public void sortirajNajstariji(){
-        Comparator<Trip> dateSorter2= (o1,o2)->o2.getDate().compareTo(o1.getDate());
+        Comparator<Trip> dateSorter2= (o1,o2)->o1.getDate().compareTo(o2.getDate());
         Collections.sort(all_trips_list,dateSorter2);
         allTripsRecylerAdapter.notifyDataSetChanged();
     }
